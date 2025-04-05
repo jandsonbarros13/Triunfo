@@ -1,0 +1,73 @@
+<nav class="navbar">
+  <ul id="menu">
+      <li>
+          <img src="../../assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
+      </li>
+      <li>
+          <a href="/home">
+              <span class="material-icons">home</span>
+              <span class="menu-text">Home</span>
+          </a>
+      </li>
+      <li>
+          <a href="/bater-ponto">
+              <span class="material-icons">access_time</span>
+              <span class="menu-text">Bater-ponto</span>
+          </a>
+      </li>
+      <li>
+          <a href="/relatorios">
+              <span class="material-icons">assessment</span>
+              <span class="menu-text">Relatórios</span>
+          </a>
+      </li>
+      <li>
+          <a href="/configuracoes">
+              <span class="material-icons">settings</span>
+              <span class="menu-text">Configurações</span>
+          </a>
+      </li>
+  </ul>
+</nav>
+<div class="fundo">
+<div class="bobina-container">
+    <header class="header">
+      <h1>Adicionar Bobina</h1>
+    </header>
+  
+    <div class="logo-container">
+      <img src="assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
+    </div>
+  
+    <div class="input-group">
+      <label for="nomeBobina">Nome da Bobina</label>
+      <input 
+        id="nomeBobina" 
+        [(ngModel)]="nomeBobina" 
+        placeholder="Insira o nome da bobina" 
+        required />
+    </div>
+  
+    <div class="input-group">
+      <label for="pesoBobina">Peso da Bobina (kg)</label>
+      <input 
+        id="pesoBobina" 
+        type="number" 
+        [(ngModel)]="pesoBobina" 
+        placeholder="Insira o peso da bobina" 
+        required />
+    </div>
+  
+    <button (click)="bobinaEditando ? salvarEdicao() : adicionarBobina()">
+      {{ bobinaEditando ? 'Salvar Alterações' : 'Adicionar Bobina' }}
+    </button>
+  
+    <ul class="bobina-list">
+      <li *ngFor="let bobina of bobinas">
+        <span>{{ bobina.nome }}: {{ formatarPeso(bobina.peso) }} kg</span>
+        <button (click)="editarBobina(bobina)">Editar</button>
+        <button (click)="excluirBobina(bobina._id)">Excluir</button>
+      </li>
+    </ul>
+  </div>
+</div>

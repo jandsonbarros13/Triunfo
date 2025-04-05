@@ -1,0 +1,78 @@
+<nav class="navbar">
+  <ul id="menu">
+    <li>
+      <img src="../../assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
+    </li>
+    <li *ngIf="userType === 'master' || cargo === 'Extrusor'">
+      <a href="/bater-ponto">
+        <span class="material-icons">access_time</span>
+        <span class="menu-text">Bater Ponto</span>
+      </a>
+    </li>
+    <li *ngIf="userType === 'master'">
+      <a href="/relatorios">
+        <span class="material-icons">assessment</span>
+        <span class="menu-text">Relatórios</span>
+      </a>
+    </li>
+    <li *ngIf="userType === 'master'">
+      <a href="/bobinas">
+        <span class="material-icons">print</span>
+        <span class="menu-text">Bobinas</span>
+      </a>
+    </li>
+    <li *ngIf="userType === 'master'">
+      <a href="/configuracoes">
+        <span class="material-icons">settings</span>
+        <span class="menu-text">Configurações</span>
+      </a>
+    </li>
+    <li *ngIf="userType === 'master'">
+      <a href="/usuarios">
+        <span class="material-icons">group</span>
+        <span class="menu-text">Usuarios</span>
+      </a>
+    </li>
+    <li>
+      <a (click)="sair()" class="logout-button">
+        <span class="material-icons">logout</span>
+        <span class="menu-text">Sair</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+<div class="login-background">
+  <div class="login-container">
+      <img src="assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
+
+      <h2>Calculadora de RPM</h2>
+
+      <div class="input-group">
+          <label for="rosca">RPM Atual:</label>
+          <input id="rosca" [(ngModel)]="rosca" type="number" step="any" placeholder="Insira o RPM" />
+      </div>
+
+      <div class="input-group">
+          <label for="pesoBobina">Peso da Bobina:</label>
+          <input id="pesoBobina" [(ngModel)]="pesoBobina" type="number" step="any" placeholder="Insira o peso da bobina (kg)" />
+      </div>
+
+      <div class="input-group">
+          <label for="pesoBase">Selecione a Bobina:</label>
+          <select id="pesoBase" [(ngModel)]="pesoBaseSelecionado">
+              <option value="" disabled selected>Selecione uma bobina</option>
+              <option *ngFor="let bobina of bobinas" [value]="bobina._id">
+                  {{ bobina.nome }} - Peso Base: {{ formatarPeso(bobina.peso) }} kg
+              </option>
+          </select>
+      </div>
+
+      <button (click)="calcularAjuste()" class="login-button">Calcular</button>
+
+      <div *ngIf="resultado !== null" class="resultado">
+          <p>
+              A rosca deve ser ajustada para <strong>{{ getResultadoFormatado() }}</strong> RPM.
+          </p>
+      </div>
+  </div>
+</div>

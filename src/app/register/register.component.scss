@@ -1,0 +1,210 @@
+nav {
+    display: flex;
+    justify-content: center; /* Alinhamento centralizado */
+    background-color: rgb(3, 3, 93);
+    position: fixed;
+    padding: 20px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+#menu {
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+    border-radius: 20px;
+}
+
+.menu-text {
+    margin-left: 5px;
+}
+
+.logo {
+    max-height: 40px; /* Ajuste conforme necessário */
+}
+
+.tela {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 220%; /* Ajustado para garantir espaço */
+    background-image: url('../../assets/usuario.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+    margin: auto; /* Centraliza o container */
+    position: relative; /* Para que o background funcione adequadamente */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem; /* Ajuste o tamanho da fonte conforme necessário */
+}
+
+.form-group input::placeholder,
+.form-group select {
+    color: #888; /* Cor dos placeholders */
+}
+
+.register-button {
+    background-color: #28a745;
+    color: white;
+    width: 100%; /* Botão ocupa toda a largura do container */
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s; /* Efeito de transição ao passar o mouse */
+}
+
+.register-button:hover {
+    background-color: #218838;
+}
+
+.resultado {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.link {
+    margin-top: 10px;
+}
+
+.link a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.link a:hover {
+    text-decoration: none;
+}
+
+/* Estilo para Usuários Cadastrados */
+.registered-users-title {
+    margin-top: 20px;
+    color: #04003f;
+    font-size: 1.5rem;
+}
+
+ul {
+    list-style: none; /* Remove os marcadores da lista */
+    padding: 0; /* Remove o padding padrão */
+    margin: 0; /* Remove a margem padrão */
+}
+
+li {
+    background-color: rgba(255, 255, 255, 0.8); /* Fundo leve com transparência */
+    margin: 10px 0; /* Espaçamento entre os itens */
+    padding: 15px; /* Preenchimento interno */
+    border-radius: 6px; /* Bordas arredondadas */
+    display: flex; /* Flexbox para alinhar conteúdo */
+    justify-content: space-between; /* Espaço entre nome e ações */
+    align-items: center; /* Centraliza verticalmente */
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); /* Sombra para efeito de profundidade */
+    transition: transform 0.2s; /* Transição suave para o efeito de hover */
+}
+
+li:hover {
+    transform: translateY(-2px); /* Levanta o item ao passar o mouse */
+}
+
+button {
+    background-color: #007bff; /* Azul padrão para botões */
+    color: white; /* Texto branco */
+    border: none; /* Remove a borda padrão */
+    border-radius: 4px; /* Bordas arredondadas */
+    padding: 8px 12px; /* Preenchimento do botão */
+    cursor: pointer; /* Muda o cursor ao passar o mouse */
+    transition: background-color 0.3s; /* Efeito de transição ao passar o mouse */
+}
+
+button:hover {
+    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+}
+
+.webcam-container {
+    position: relative; /* Alterado para permitir posicionamento em relação ao container */
+    margin-top: -200px; /* Faz a webcam ficar em cima da foto */
+    left: 50%; /* Alinha à esquerda do contêiner pai */
+    transform: translateX(-50%); /* Centraliza horizontalmente */
+    width: 200px; /* Tamanho da webcam */
+    height: 200px; /* Tamanho da webcam */
+    overflow: hidden; /* Para evitar que a câmera ultrapasse o container */
+    border-radius: 50%;
+    z-index: 10; /* Garante que a webcam fique acima de outros elementos */
+}
+  
+.webcam-container webcam {
+    width: 100%; /* Faz a webcam ocupar 100% do container */
+    height: 100%; /* Faz a webcam ocupar 100% do container */
+}
+
+/* Estilos para a foto do usuário */
+.profile-photo {
+    width: 200px; /* Tamanho da foto */
+    height: 200px; /* Tamanho da foto */
+    object-fit: cover;
+    border-radius: 50%; /* Bordas arredondadas */
+    cursor: pointer;
+    margin-top: 20px; /* Adiciona espaço acima da foto */
+}
+
+@media (max-width: 600px) {
+    .menu-text {
+        display: none;
+    }
+
+    #menu {
+        justify-content: space-around;
+        margin-left: -50px;
+    }
+
+    nav ul li {
+        margin: 0 5px;
+    }
+
+    nav ul li span.material-icons {
+        font-size: 10px;
+    }
+
+    .register-container {
+        margin-top: 120px;
+        width: 90%;
+        max-width: 250px;
+        padding: 20px;
+    }
+}

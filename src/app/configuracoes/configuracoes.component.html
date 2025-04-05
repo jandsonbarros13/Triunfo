@@ -1,0 +1,70 @@
+<nav class="navbar">
+  <ul id="menu">
+    <li>
+      <img src="../../assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
+    </li>
+    <li>
+      <a href="/home">
+        <span class="material-icons">home</span>
+        <span class="menu-text">Home</span>
+      </a>
+    </li>
+    <li>
+      <a href="/bater-ponto">
+        <span class="material-icons">access_time</span>
+        <span class="menu-text">Bater Ponto</span>
+      </a>
+    </li>
+    <li>
+      <a href="/relatorios">
+        <span class="material-icons">assessment</span>
+        <span class="menu-text">Relatórios</span>
+      </a>
+    </li>
+    <li>
+      <a href="/bobinas">
+        <span class="material-icons">print</span>
+        <span class="menu-text">Bobinas</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<div class="background-image">
+  <div class="container">
+    <img src="../../assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
+
+    <div *ngIf="enderecoAtual" class="resultado">
+      <label>
+        Endereço atual: <strong>{{ enderecoAtual }}</strong>
+      </label>
+    </div>
+
+    <button (click)="gravarEndereco()" class="btn btn-success">
+      Gravar Endereço
+    </button>
+    
+    <button (click)="obterEnderecoAtual()" class="btn btn-secondary">
+      Obter Endereço Atual
+    </button>
+
+    <ul>
+      <li *ngFor="let endereco of enderecos">
+        <span>{{ endereco }}</span>
+        <div>
+          <button (click)="editarEndereco(endereco)" class="btn-action">
+            <span class="material-icons">edit</span>
+          </button>
+          <button (click)="removerEndereco(endereco)" class="btn-action">
+            <span class="material-icons">delete</span>
+          </button>
+          <div class="fixed-button-container">
+            <button (click)="excluirTodosOsPontosEFotos()" class="btn btn-danger">
+              Excluir Todos os Pontos e Fotos
+            </button>
+          </div>          
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

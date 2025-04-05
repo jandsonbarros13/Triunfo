@@ -1,0 +1,119 @@
+.header {
+    position: fixed; /* Fixa o header no topo da tela */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white; /* Fundo branco */
+    height: 60px; /* Altura do header */
+    display: flex;
+    justify-content: space-around; /* Espaço entre a logo e o botão */
+    align-items: center; /* Alinha verticalmente os itens */
+    padding: 0 20px; /* Espaçamento interno */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    z-index: 1000; /* Garante que o header fique acima de outros elementos */
+}
+
+.logo {
+    height: 40px; /* Altura da logo */
+}
+.background-image {
+    background-image: url('../../assets/usuario.jpg'); /* Caminho da imagem de fundo */
+    background-size: cover;
+    background-position: center;
+    height: 100vh; /* Ocupa toda a altura da tela */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+    position: relative; /* Para posicionar a webcam corretamente */
+  }
+  
+  .profile-photo-container {
+    margin-bottom: 20px;
+  }
+  
+  .profile-photo {
+    width: 200px; /* Tamanho da foto */
+    height: 200px; /* Tamanho da foto */
+    object-fit: cover;
+    border-radius: 50%; /* Bordas arredondadas */
+    cursor: pointer;
+  }
+  
+  .webcam-container {
+    width: 200px; /* Tamanho a webcam */
+    height: 200px; /* Tamanho da webcam */
+    margin-bottom: 20px; /* Espaço abaixo da webcam */
+    display: flex;
+    margin-left: 100px;
+    flex-direction: column;
+    align-items: center; /* Alinha os botões no centro */
+    border-radius: 50%; /* Bordas arredondadas */
+    overflow: hidden; /* Para garantir que a webcam siga as bordas arredondadas */
+  }
+  
+  webcam {
+    border-radius: 50%; /* Bordas arredondadas para a webcam */
+    width: 100%; /* Ajusta a largura da webcam */
+    height: auto; /* Mantém a proporção */
+  }
+  
+  .input-box {
+    margin-bottom: 15px;
+  }
+  
+  .input-box label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .input-box input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .register-button {
+    background-color: #28a745;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px; /* Bordas arredondadas */
+    cursor: pointer;
+    margin-top: 15px; /* Espaço acima do botão de cadastro */
+  }
+  
+  .register-button:hover {
+    background-color: #218838;
+  }
+  
+  .capture-button, .close-button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px; /* Bordas arredondadas nos botões */
+    cursor: pointer;
+    width: 100%; /* Botões ocupam a largura total */
+  }
+  
+  .capture-button:hover, .close-button:hover {
+    background-color: #0056b3;
+  }
+
+  @media (max-width: 600px) {
+    .webcam-container {
+        margin-left: 80px;
+    }
+}

@@ -1,0 +1,157 @@
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  .background-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/config.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+    position: relative; /* Adicionado para posicionar o botão fixo */
+    padding-bottom: 80px; /* Adiciona espaço para o botão fixo */
+  }
+  
+  .logo {
+    width: 60px; /* Define a largura da logo */
+    height: auto; /* Mantém a proporção da altura */
+    margin: 0 20px; /* Margem para espaçamento */
+  }
+  
+  .resultado {
+    margin-bottom: 20px;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  
+    &.btn-success {
+      background-color: #28a745;
+    }
+  
+    &.btn-secondary {
+      background-color: #6c757d;
+    }
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #ccc;
+  
+      .btn-action {
+        background: none;
+        border: none;
+        cursor: pointer;
+  
+        .material-icons {
+          font-size: 20px;
+          color: #007bff; // cor do ícone de editar
+        }
+      }
+    }
+  }
+  
+  .fixed-button-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 400px;
+    z-index: 10;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  nav {
+    display: flex; /* Mantém a logo e o menu lado a lado */
+    align-items: center; /* Alinha verticalmente */
+    justify-content: space-around;
+    background-color: rgb(3, 3, 93);
+  }
+  
+  #menu {
+    display: flex; /* Mantém os ícones lado a lado */
+    justify-content: space-between;
+  }
+  
+  nav ul li {
+    margin: 0 10px; // Espaçamento entre os itens
+    display: flex;
+    align-items: center; // Alinha ícones no centro
+    background-color: white;
+    border-radius: 20px;
+  }
+  
+  .menu-text {
+    margin-left: 5px; // Espaçamento entre o ícone e o texto
+  }
+  
+  @media (max-width: 600px) {
+    .menu-text {
+      display: none; // Oculta o texto em dispositivos móveis
+    }
+    #menu {
+      display: flex; /* Mantém os ícones lado a lado */
+      justify-content: space-around;
+    }
+    .logo {
+      width: 30px; /* Define a largura da logo */
+      height: auto; /* Mantém a proporção da altura */
+    }
+  
+    nav ul li {
+      margin: 0 5px; // Menor espaçamento em telas pequenas
+    }
+  
+    nav ul li span.material-icons {
+      font-size: 10px; // Ajusta o tamanho do ícone
+    }
+  
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      width: 90%; /* Ajusta a largura do container */
+      max-width: 250px; /* Largura máxima para telas pequenas */
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Centraliza o conteúdo dentro do container */
+    }
+  }

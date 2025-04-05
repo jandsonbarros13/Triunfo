@@ -1,0 +1,21 @@
+{
+    "name": "TriunfoLacres",
+    "short_name": "Triunfo",
+    "description": "Aplicativo TriunfoLacres",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#04003f",
+    "icons": [
+      {
+        "src": "assets/triunfo.jpeg",
+        "sizes": "192x192",
+        "type": "image/jpeg"
+      },
+      {
+        "src": "assets/triunfo.jpeg",
+        "sizes": "512x512",
+        "type": "image/jpeg"
+      }
+    ]
+  }

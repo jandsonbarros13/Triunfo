@@ -1,0 +1,52 @@
+<div class="header">
+    <img src="../../assets/TRIUNFO LOGO ALPHA.png" alt="Logo" class="logo">
+    <button (click)="logout()" class="logout-button">
+        <span class="material-icons">logout</span>
+    </button>
+</div>
+
+<div class="background-image">
+    <div class="container">
+        <h2>Cadastro de Primeiro Acesso</h2>
+
+        <div class="webcam-container" *ngIf="showCamera">
+            <webcam 
+                [trigger]="trigger" 
+                (imageCapture)="captureImage($event)"
+                [width]="320" 
+                [height]="240">
+            </webcam>
+        </div>
+
+        <div class="profile-photo-container" *ngIf="!showCamera">
+            <img 
+                [src]="userData.foto || 'assets/foto.png'" 
+                alt="Foto do Usuário" 
+                class="profile-photo" 
+                (click)="toggleCamera()" 
+                style="cursor: pointer;" />
+        </div>
+        
+        <button (click)="trigger.next()" class="capture-button" *ngIf="showCamera">Capturar</button>
+        <button (click)="toggleCamera()" class="close-button" *ngIf="showCamera">Fechar Câmera</button>
+
+        <form (ngSubmit)="cadastrar()">
+            <div class="input-box">
+                <label for="nome">Nome Completo</label>
+                <input id="nome" type="text" [(ngModel)]="userData.nome" name="nome" required />
+            </div>
+
+            <div class="input-box">
+                <label for="username">Username</label>
+                <input id="username" type="text" [(ngModel)]="userData.username" name="username" required />
+            </div>
+
+            <div class="input-box">
+                <label for="password">Senha</label>
+                <input id="password" type="password" [(ngModel)]="userData.password" name="password" required />
+            </div>
+
+            <button type="submit" class="register-button">Cadastrar</button>
+        </form>
+    </div>
+</div>

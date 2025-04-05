@@ -1,0 +1,163 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.fundo {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  background-image: url('../../assets/bobina.avif'); /* Imagem de fundo da página */
+  background-size: cover; /* Faz a imagem cobrir todo o fundo */
+  background-position: center; /* Centraliza a imagem */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(3, 3, 93);
+  position: fixed;
+  padding: 30px; /* Reduzindo o padding para telas menores */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+#menu {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar ul li {
+  margin: 0 5px; /* Reduzindo a margem para telas menores */
+  display: flex;
+  padding: 15px; /* Reduzindo o padding para telas menores */
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.menu-text {
+  margin-left: 3px; /* Reduzindo a margem para telas menores */
+  font-size: 0.9em; /* Reduzindo o tamanho da fonte para telas menores */
+}
+
+.logo {
+  max-height: 30px; /* Reduzindo a altura máxima para telas menores */
+}
+
+.bobina-container {
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9); /* Fundo branco com opacidade */
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 150px auto; /* Centraliza com margem superior para evitar sobreposição da navbar */
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 0;
+  color: #003366;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.bobina-list {
+  list-style: none;
+  padding: 0;
+}
+
+.bobina-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.bobina-list button {
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.bobina-list button:hover {
+  text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .navbar {
+      flex-direction: column;
+      align-items: center;
+      padding: 15px; /* Ajustando padding para telas menores */
+  }
+
+  .bobina-container {
+      width: 90%; /* Ajuste a largura para telas menores */
+      padding: 15px;
+      margin: 100px auto; /* Ajusta a margem superior para evitar sobreposição da navbar */
+  }
+
+  .input-group input {
+      padding: 8px; /* Ajuste do padding */
+  }
+
+  button {
+      padding: 8px; /* Ajuste do padding */
+  }
+
+  .menu-text {
+      display: none; /* Oculta o texto do menu em telas menores */
+  }
+
+  .logo {
+      max-height: 25px; /* Reduzindo a altura máxima para telas menores */
+  }
+}

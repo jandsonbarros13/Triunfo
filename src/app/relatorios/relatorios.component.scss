@@ -1,0 +1,297 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(3, 3, 93);
+  position: fixed;
+  padding: 30px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+#menu {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  margin: 0 5px;
+  display: flex;
+  padding: 15px;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.menu-text {
+  margin-left: 3px;
+  font-size: 0.9em;
+}
+
+.logo {
+  max-height: 30px;
+}
+
+.relatorios-container {
+  min-height: 120vh;
+  padding: 20px;
+  background-image: url('../../assets/ponto.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 50px;
+}
+
+.relatorios-container .table-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  width: 95%;
+  max-width: 100%;
+}
+
+.relatorios-container .table-container .header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.relatorios-container .table-container .header h1 {
+  margin: 0 0 8px 0;
+  font-size: 1.3em;
+  color: #003366;
+}
+
+.relatorios-container .table-container .header .header-buttons {
+  display: flex;
+  flex-direction: column; // Mantém a direção em coluna para telas pequenas
+  align-items: stretch; // Estende os botões para preencher a largura
+  width: 100%;
+  gap: 8px;
+}
+
+.relatorios-container .table-container .header .header-buttons button {
+  width: 100%; // Garante que os botões ocupem toda a largura do container
+  margin-bottom: 5px;
+  box-sizing: border-box; // Garante que padding e border não alterem a largura total
+}
+
+.relatorios-container
+  .table-container
+  .header
+  .header-buttons
+  .button-search,
+.relatorios-container
+  .table-container
+  .header
+  .header-buttons
+  .button-print {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.relatorios-container
+  .table-container
+  .header
+  .header-buttons
+  .button-search:hover,
+.relatorios-container
+  .table-container
+  .header
+  .header-buttons
+  .button-print:hover {
+  background-color: #0056b3;
+}
+
+.relatorios-container .table-container .header .header-buttons .material-icons {
+  margin-right: 3px;
+  font-size: 18px;
+}
+
+.relatorios-container .table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.relatorios-container .table-container th,
+.relatorios-container .table-container td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  color: #003366;
+}
+
+.relatorios-container .table-container th {
+  background-color: #f2f2f2;
+}
+
+.relatorios-container .table-container tr:hover {
+  background-color: #f1f1f1;
+}
+
+.relatorios-container .filter-container {
+  margin-bottom: 15px;
+  width: 95%;
+  max-width: 100%;
+}
+
+.relatorios-container .filter-container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.relatorios-container .filter-container select,
+.relatorios-container .filter-container input {
+  width: calc(100% - 22px);
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+.relatorios-container .summary-container {
+  margin-top: 15px;
+  width: 95%;
+  max-width: 100%;
+}
+
+@media (max-width: 600px) {
+  .menu-text {
+    display: none;
+  }
+  .logo {
+    width: 40px;
+  }
+
+  #menu {
+    justify-content: space-around;
+    width: 70%;
+  }
+
+  nav ul li {
+    margin: 0;
+    width: 30px;
+    justify-content: center;
+    margin-left: -30px;
+  }
+
+  nav ul li span.material-icons {
+    font-size: 10px;
+  }
+
+  .relatorios-container .table-container,
+  .relatorios-container .filter-container,
+  .relatorios-container .summary-container {
+    width: 90%;
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .relatorios-container .filter-container select,
+  .relatorios-container .filter-container input {
+    width: calc(100% - 16px);
+    padding: 6px;
+    margin-bottom: 6px;
+  }
+
+  .relatorios-container .table-container .header {
+    align-items: center;
+    text-align: center;
+  }
+
+  .relatorios-container .table-container .header-buttons {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .relatorios-container .table-container .header-buttons button {
+    width: 90%;
+    margin-bottom: 5px;
+  }
+  table {
+    th,
+    td {
+      padding: 6px;
+      text-align: center;
+    }
+
+    th {
+      .column-text {
+        display: none;
+      }
+    }
+  }
+  .relatorios-container .table-container th span.material-icons,
+  .relatorios-container .table-container td img {
+    font-size: 16px;
+    width: 22px;
+    height: 22px;
+  }
+  table tr th.cargo-col,
+  table tr td.cargo-col {
+    display: none;
+  }
+  table th.cargo-col,
+  table td.cargo-col {
+    display: none;
+  }
+}
+
+/* Estilos para a funcionalidade de expandir a imagem */
+.expanded-image-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Fundo escuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que fique na frente de tudo */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+.expanded-image {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain; /* Mantém a proporção da imagem */
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}

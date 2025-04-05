@@ -1,0 +1,78 @@
+html, body {
+    height: 100%; /* Faz com que o html e body ocupem 100% da altura */
+    margin: 0; /* Remove a margem padrão do body */
+    overflow: hidden; /* Remove as barras de rolagem */
+  }
+  
+  .login-background {
+    position: absolute; /* Tira o elemento do fluxo normal do documento */
+    top: 0; /* Alinha ao topo */
+    left: 0; /* Alinha à esquerda */
+    width: 100%; /* Largura total da tela */
+    height: 100%; /* Altura total da tela */
+    background-image: url('../../assets/image_.png'); /* Coloque a URL da sua imagem de fundo aqui */
+    background-size: cover; /* Faz com que a imagem cubra todo o fundo */
+    background-position: center; /* Centraliza a imagem de fundo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Fundo branco com um leve tom de transparência */
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 400px; /* Largura do container */
+    text-align: center; /* Centraliza o texto dentro do container */
+  }
+  
+  .logo {
+    width: 100%; /* Ajusta a largura da logo para preencher o espaço */
+    max-width: 200px; /* Largura máxima da logo */
+    margin-bottom: 20px; /* Margem abaixo da logo */
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+  
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  }
+  
+  .login-button {
+    background-color: #28a745; /* Cor do botão */
+    color: white;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: #218838; /* Cor do botão ao passar o mouse */
+    }
+  }
+  
+  .link {
+    margin-top: 10px;
+  
+    a {
+      color: #007bff; /* Cor do link */
+      text-decoration: underline;
+  
+      &:hover {
+        text-decoration: none; /* Remove o sublinhado ao passar o mouse */
+      }
+    }
+  }

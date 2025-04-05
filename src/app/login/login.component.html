@@ -1,0 +1,25 @@
+<div class="login-background">
+  <div class="login-container">
+      <img src="assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
+      <form (ngSubmit)="login()">
+          <div class="input-group">
+              <label for="username">Nome de Usuário</label>
+              <input type="text" id="username" [(ngModel)]="userData.username" name="username" required placeholder="Digite seu nome de usuário">
+          </div>
+          <div class="input-group">
+              <label for="password">Senha</label>
+              <input type="password" id="password" [(ngModel)]="userData.password" name="password" required placeholder="Digite sua senha">
+          </div>
+          <button type="submit" class="login-button">Login</button>
+          <p class="link">
+              <a routerLink="/primeiro-acesso">Primeiro Acesso</a>
+          </p>
+          <p class="link">
+            <a href="../../assets/app-release.apk" download="TRIUNFO.apk">
+                <span class="material-icons" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">download</span>
+                Baixar App TRIUNFO
+            </a>
+        </p>
+  </form>
+  </div>
+</div>

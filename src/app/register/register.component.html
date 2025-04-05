@@ -1,0 +1,151 @@
+<nav class="navbar">
+  <ul id="menu">
+    <li>
+      <img src="assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
+    </li>
+    <li>
+      <a routerLink="/home">
+        <span class="material-icons">home</span>
+        <span class="menu-text">Home</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/bater-ponto">
+        <span class="material-icons">access_time</span>
+        <span class="menu-text">Bater Ponto</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/relatorios">
+        <span class="material-icons">assessment</span>
+        <span class="menu-text">Relatórios</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/bobinas">
+        <span class="material-icons">print</span>
+        <span class="menu-text">Bobinas</span>
+      </a>
+    </li>
+    <li>
+      <a (click)="sair()" class="logout-button">
+        <span class="material-icons">logout</span>
+        <span class="menu-text">Sair</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<div class="tela">
+  <div class="register-container">
+    <img src="assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
+    <h1 class="register-title">Cadastrar Usuários</h1>
+
+    <div class="profile-photo-container">
+      <img
+        [src]="userData.foto || 'assets/foto.png'"
+        alt="Foto do Usuário"
+        class="profile-photo"
+        (click)="capturarFoto()"
+        style="cursor: pointer"
+      />
+    </div>
+
+    <div *ngIf="showCamera" class="webcam-container">
+      <webcam [trigger]="trigger" (imageCapture)="handleImage($event)" [width]="320" [height]="240"></webcam>
+    </div>
+
+    <button (click)="captureImage()" *ngIf="showCamera" style="margin-top: 20px;">Capturar Foto</button>
+    <button (click)="toggleCamera()" *ngIf="showCamera" style="margin-top: 20px;">Fechar Câmera</button>
+
+    <form (ngSubmit)="registrar()" #registerForm="ngForm">
+      <div class="form-group">
+        <input
+          type="text"
+          id="nome"
+          [(ngModel)]="userData.nome"
+          name="nome"
+          placeholder="Nome do Cliente"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          id="username"
+          [(ngModel)]="userData.username"
+          name="username"
+          placeholder="Username"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="userData.password"
+          name="password"
+          placeholder="Senha"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <select [(ngModel)]="userData.cargo" name="cargo" required>
+          <option value="" disabled selected>Selecione um cargo</option>
+          <option value="Extrusor">Extrusor</option>
+          <option value="Impressor Flexográfico">Impressor Flexográfico</option>
+          <option value="Operador de máquina em geral">Operador de máquina em geral</option>
+          <option value="Serviços gerais">Serviços gerais</option>
+          <option value="Financeiro">Financeiro</option>
+          <option value="Coordenador">Coordenador</option>
+          <option value="Gerente">Gerente</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <select [(ngModel)]="userData.userType" name="userType" required>
+          <option value="user">Usuário</option>
+          <option value="master">Master</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="time"
+          id="horarioEntrada"
+          [(ngModel)]="userData.horarioEntrada"
+          name="horarioEntrada"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <input
+          type="time"
+          id="horarioSaida"
+          [(ngModel)]="userData.horarioSaida"
+          name="horarioSaida"
+          required
+        />
+      </div>
+
+      <button type="submit" class="register-button">
+        {{ isEditing ? "Atualizar" : "Registrar" }}
+      </button>
+    </form>
+
+    <h2 class="registered-users-title" style="color: #04003f; font-size: 1.5rem">
+      Usuários Cadastrados
+    </h2>
+    <ul>
+      <li *ngFor="let usuario of usuarios | slice:0:5">
+        <strong>{{ usuario.nome }}</strong> - {{ usuario.cargo }}
+        <button (click)="editarUsuario(usuario)">Editar</button>
+        <button (click)="excluirUsuario(usuario._id)">Excluir</button>
+      </li>
+    </ul>
+  </div>
+</div>
