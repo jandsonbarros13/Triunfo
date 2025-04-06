@@ -31,7 +31,7 @@ export class BaterPontoComponent implements OnInit {
   mostrarSaidaInput: boolean = false;
   showCamera: boolean = false;
   capturandoEntrada: boolean = true;
-  pontoRegistradoHoje: boolean = false; // Adicionado
+  pontoRegistradoHoje: boolean = false;
 
   public trigger: Subject<void> = new Subject<void>();
 
@@ -44,7 +44,7 @@ export class BaterPontoComponent implements OnInit {
   ngOnInit() {
     this.getUserInfo();
     this.loadSavedEntry();
-    this.checkPontoRegistradoHoje(); // Adicionado
+    this.checkAndClearLocalStorage(); // Adicionado
   }
 
   async getUserInfo() {
@@ -107,7 +107,7 @@ export class BaterPontoComponent implements OnInit {
     };
 
     localStorage.setItem('pontoLocal', JSON.stringify(this.pontoLocal));
-    this.pontoRegistradoHoje = true; // Adicionado
+    this.pontoRegistradoHoje = false; // Set to false, because the point is not fully registered yet.
 
     this.showAlert('Entrada Salva', 'Sua entrada foi salva localmente. Agora, você pode registrar a saída.');
     this.mostrarSaidaInput = true;
@@ -160,7 +160,7 @@ export class BaterPontoComponent implements OnInit {
       next: async (response) => {
         this.showAlert('Sucesso', 'Ponto registrado com sucesso!');
         this.resetForm();
-        this.pontoRegistradoHoje = true; // Adicionado
+        this.pontoRegistradoHoje = true;
       },
       error: async (error) => {
         console.error('Erro ao registrar ponto:', error);
@@ -175,7 +175,7 @@ export class BaterPontoComponent implements OnInit {
     this.fotoUrlEntrada = '';
     this.fotoUrlSaida = '';
     localStorage.removeItem('pontoLocal');
-    this.pontoRegistradoHoje = false; // Adicionado
+    this.pontoRegistradoHoje = false;
     this.capturandoEntrada = true;
   }
 
@@ -183,17 +183,20 @@ export class BaterPontoComponent implements OnInit {
     alert(`${header}: ${message}`);
   }
 
-  private checkPontoRegistradoHoje() {
-    const savedEntry = localStorage.getItem('pontoLocal');
-    if (savedEntry) {
-      const ponto = JSON.parse(savedEntry);
-      if (ponto && ponto.horarioSaida) {
-        this.pontoRegistradoHoje = true;
-      } else {
-        this.pontoRegistradoHoje = false;
-      }
-    } else {
+  private checkAndClearLocalStorage() {
+    const lastClearDate = localStorage.getItem('lastClearDate');
+    const currentDate = new Date().toLocaleDateString();
+
+    if (lastClearDate !== currentDate) {
+      localStorage.removeItem('pontoLocal');
+      localStorage.setItem('lastClearDate', currentDate);
       this.pontoRegistradoHoje = false;
+    } else {
+      const savedEntry = localStorage.getItem('pontoLocal');
+      if (savedEntry) {
+        const ponto = JSON.parse(savedEntry);
+        this.pontoRegistradoHoje = !!(ponto && ponto.horarioSaida);
+      }
     }
   }
 }
