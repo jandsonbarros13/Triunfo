@@ -1,42 +1,5 @@
-<nav class="navbar">
-  <ul id="menu">
-    <li>
-      <img src="assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
-    </li>
-    <li>
-      <a routerLink="/home">
-        <span class="material-icons">home</span>
-        <span class="menu-text">Home</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/bater-ponto">
-        <span class="material-icons">access_time</span>
-        <span class="menu-text">Bater Ponto</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/relatorios">
-        <span class="material-icons">assessment</span>
-        <span class="menu-text">Relatórios</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/bobinas">
-        <span class="material-icons">print</span>
-        <span class="menu-text">Bobinas</span>
-      </a>
-    </li>
-    <li>
-      <a (click)="sair()" class="logout-button">
-        <span class="material-icons">logout</span>
-        <span class="menu-text">Sair</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-
 <div class="tela">
+  <app-menu></app-menu>
   <div class="register-container">
     <img src="assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
     <h1 class="register-title">Cadastrar Usuários</h1>

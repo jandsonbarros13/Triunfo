@@ -1,127 +1,97 @@
-<nav class="navbar">
-    <ul id="menu">
-      <li>
-        <img src="../../assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
-      </li>
-      <li>
-        <a href="/home">
-          <span class="material-icons">home</span>
-          <span class="menu-text">Home</span>
-        </a>
-      </li>
-      <li>
-        <a href="/bater-ponto">
-          <span class="material-icons">access_time</span>
-          <span class="menu-text">Bater-ponto</span>
-        </a>
-      </li>
-      <li>
-        <a href="/bobinas">
-          <span class="material-icons">print</span>
-          <span class="menu-text">Bobinas</span>
-        </a>
-      </li>
-      <li>
-        <a href="/configuracoes">
-          <span class="material-icons">settings</span>
-          <span class="menu-text">Configurações</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-  
-  <div class="relatorios-container">
-    <div class="table-container">
-      <header class="header">
-        <h1 style="margin-top: 100px;">Relatórios</h1>
-        <div class="header-buttons">
-          <button class="button-search" (click)="applyFilter()" style="margin-top: 20px;">
-            <span class="material-icons">search</span> Pesquisar
-          </button>
-          <button class="button-print" (click)="generatePDF()">
-            <span class="material-icons">print</span> Imprimir
-          </button>
-        </div>
-      </header>
-  
-      <div class="filter-container">
-        <label>Nome do Usuário</label>
-        <select [(ngModel)]="selectedUser">
-          <option *ngFor="let user of users" [value]="user.nome">{{ user.nome }}</option>
-        </select>
-  
-        <label>Data de Início</label>
-        <input type="date" [(ngModel)]="startDate" />
-  
-        <label>Data de Fim</label>
-        <input type="date" [(ngModel)]="endDate" />
-  
-        <button (click)="applyFilter()">Aplicar Filtro</button>
+<div class="relatorios-container">
+  <app-menu></app-menu>
+  <div class="table-container">
+    <header class="header">
+      <h1 style="margin-top: 100px;">Relatórios</h1>
+      <div class="header-buttons">
+        <button class="button-search" (click)="applyFilter()" style="margin-top: 20px;">
+          <span class="material-icons">search</span> Pesquisar
+        </button>
+        <button class="button-print" (click)="generatePDF()">
+          <span class="material-icons">print</span> Imprimir
+        </button>
       </div>
-  
-      <table>
-        <thead>
-          <tr>
-            <th class="foto-col">
-              <span class="material-icons">image</span>
-              <span class="column-text">Foto</span>
-            </th>
-            <th class="data-col">
-              <span class="material-icons">calendar_today</span>
-              <span class="column-text">Data</span>
-            </th>
-            <th class="nome-col">
-              <span class="material-icons">person</span>
-              <span class="column-text">Nome</span>
-            </th>
-            <th class="cargo-col" *ngIf="!isSmallScreen">
-              <span class="material-icons">work</span>
-              <span class="column-text">Cargo</span>
-            </th>
-            <th class="entrada-col">
-              <span class="material-icons">login</span>
-              <span class="column-text">Horário de Entrada</span>
-            </th>
-            <th class="saida-col">
-              <span class="material-icons">logout</span>
-              <span class="column-text">Horário de Saída</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let report of displayedReports">
-            <td>
-              <img [src]="report.fotoUrl" alt="Foto de {{ report.nome }}" style="width: 50px; height: auto; cursor: pointer;"
-                (click)="expandImage(report.fotoUrl)" />
-            </td>
-            <td>{{ report.data }}</td>
-            <td>{{ report.nome }}</td>
-            <td class="cargo-col" *ngIf="!isSmallScreen">{{ report.cargo }}</td>
-            <td>{{ report.horarioEntrada }}</td>
-            <td>{{ report.horarioSaida }}</td>
-          </tr>
-        </tbody>
-      </table>
-  
-      <div class="summary-container">
-        <h4>Resumo:</h4>
-        <p><strong>{{ selectedUser }}</strong></p>
-        <p>Horas Devedoras: {{ calculateHours().horasDevedoras }}</p>
-        <p>Horas Extras: {{ calculateHours().horasExtras }}</p>
-        <p>Diferencial: {{ calculateHours().diferencial }}</p>
-      </div>
-  
-      <div class="pagination-controls">
-        <button (click)="previousPage()" [disabled]="currentPage === 0">Anterior</button>
-        <span>Página {{ currentPage + 1 }}</span>
-        <button (click)="nextPage()" [disabled]="currentPage >= totalPages() - 1">Próxima</button>
-      </div>
+    </header>
+
+    <div class="filter-container">
+      <label>Nome do Usuário</label>
+      <select [(ngModel)]="selectedUser">
+        <option *ngFor="let user of users" [value]="user.nome">{{ user.nome }}</option>
+      </select>
+
+      <label>Data de Início</label>
+      <input type="date" [(ngModel)]="startDate" />
+
+      <label>Data de Fim</label>
+      <input type="date" [(ngModel)]="endDate" />
+
+      <button (click)="applyFilter()">Aplicar Filtro</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th class="foto-col">
+            <span class="material-icons">image</span>
+            <span class="column-text">Foto</span>
+          </th>
+          <th class="data-col">
+            <span class="material-icons">calendar_today</span>
+            <span class="column-text">Data</span>
+          </th>
+          <th class="nome-col">
+            <span class="material-icons">person</span>
+            <span class="column-text">Nome</span>
+          </th>
+          <th class="cargo-col" *ngIf="!isSmallScreen">
+            <span class="material-icons">work</span>
+            <span class="column-text">Cargo</span>
+          </th>
+          <th class="entrada-col">
+            <span class="material-icons">login</span>
+            <span class="column-text">Horário de Entrada</span>
+          </th>
+          <th class="saida-col">
+            <span class="material-icons">logout</span>
+            <span class="column-text">Horário de Saída</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let report of displayedReports">
+          <td>
+            <img [src]="report.fotoUrl" alt="Foto de {{ report.nome }}" style="width: 50px; height: auto; cursor: pointer;"
+              (click)="expandImage(report.fotoUrl)" />
+          </td>
+          <td>{{ report.data }}</td>
+          <td>{{ report.nome }}</td>
+          <td class="cargo-col" *ngIf="!isSmallScreen">{{ report.cargo }}</td>
+          <td>{{ report.horarioEntrada }}</td>
+          <td>{{ report.horarioSaida }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="summary-container">
+      <h4>Resumo:</h4>
+      <p><strong>{{ selectedUser }}</strong></p>
+      <p>Horas Devedoras: {{ calculateHours().horasDevedoras }}</p>
+      <p>Horas Extras: {{ calculateHours().horasExtras }}</p>
+      <p>Diferencial: {{ calculateHours().diferencial }}</p>
+      <p>Horas Trabalhadas: {{ calculateHours().horasTrabalhadas }}</p>
+    </div>
+
+    <div class="pagination-controls">
+      <button (click)="previousPage()" [disabled]="currentPage === 0">Anterior</button>
+      <span>Página {{ currentPage + 1 }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage >= totalPages() - 1">Próxima</button>
     </div>
   </div>
-  
-  <div class="expanded-image-container" *ngIf="isImageExpanded" (click)="closeExpandedImage()">
-    <img [src]="expandedImageUrl" alt="Foto Expandida" class="expanded-image">
-    <button class="close-button" (click)="closeExpandedImage()">
-      <span class="material-icons">close</span>
-    </button>
-  </div>
+</div>
+
+<div class="expanded-image-container" *ngIf="isImageExpanded" (click)="closeExpandedImage()">
+  <img [src]="expandedImageUrl" alt="Foto Expandida" class="expanded-image">
+  <button class="close-button" (click)="closeExpandedImage()">
+    <span class="material-icons">close</span>
+  </button>
+</div>

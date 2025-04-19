@@ -1,61 +1,127 @@
+/* Estilos globais e para o body */
 html, body {
     height: 100%;
     margin: 0;
-    overflow: hidden;
-    padding-top: 60px; /* Ajuste para o cabeçalho fixo */
+    overflow: auto;
+    padding-top: 0;
 }
 
-nav {
-    display: flex;
-    justify-content: space-around;
-    background-color: rgb(3, 3, 93);
-    position: fixed;
-    padding: 20px;
+header {
+    background-color: rgb(3, 3, 93); /* Fundo azul do header */
+    width: 100%;
+    position: fixed; /* Mantenha o header fixo no topo */
     top: 0;
     left: 0;
-    width: 100%;
-    z-index: 1000;
+    z-index: 1001; /* Garante que o header fique acima da nav inicialmente */
+    height: 100px; /* Altura fixa do header */
 }
 
+/* Estilos para a barra de navegação */
+nav {
+    display: block; /* Controla a altura para a animação */
+    justify-content: flex-start; /* Alinha o logo à esquerda */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* Largura inicial de 100% */
+    height: auto; /* Altura automática para se ajustar ao conteúdo inicial */
+    z-index: 1000;
+    padding: 20px 20px;
+    overflow: hidden;
+    max-height: 50px; /* Altura inicial para o logo (menu oculto) */
+    transition: max-height 0.3s ease-in-out, width 0.3s ease-in-out; /* Transição na altura e largura */
+    cursor: pointer;
+    background-color: transparent; /* O fundo da nav será transparente inicialmente */
+}
+
+/* Estilos quando a classe 'open' está presente na nav */
+nav.open {
+    height: 100vh;
+    max-height: none; /* Remove o max-height */
+    width: 30%; /* Largura de 30% quando aberto */
+    cursor: default;
+    background-color: rgba(3, 3, 93, 0.9); /* Fundo azul escuro (com alguma transparência) para a nav aberta */
+}
+
+/* Estilos para a lista do menu */
 #menu {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     list-style-type: none;
     padding: 0;
     margin: 0;
+    align-items: flex-start;
+    background-color: transparent; /* Fundo transparente para o menu */
 }
 
+/* Estilos para os itens da lista (li) dentro da nav */
 nav ul li {
-    margin: 0 10px;
+    margin: 5px 0; /* Espaçamento vertical */
     display: flex;
     align-items: center;
-    padding: 10px;
-    background-color: white;
+    padding: 5px;
+    background-color: white; /* Fundo branco dos botões */
     border-radius: 20px;
+    box-sizing: border-box;
+    opacity: 0; /* Inicialmente invisível */
+    transform: translateX(-20px); /* Pequeno deslocamento para a esquerda */
+    transition: opacity 0.3s ease-in-out 0.1s, transform 0.3s ease-in-out 0.1s;
+    width: 100%; /* Ocupa a largura total da nav */
 }
 
-.menu-text {
-    margin-left: 5px;
+/* Estilos para os itens da lista quando a classe 'open' está na nav */
+nav.open ul li {
+    opacity: 1; /* Torna visível */
+    transform: translateX(0); /* Remove o deslocamento */
+    width: 100%; /* Garante que os itens ocupem a largura da nav aberta */
+    /* background-color: transparent; /* Mantenha o fundo transparente para os itens */
 }
 
+/* Estilos específicos para o primeiro item da lista (o logo) */
+nav ul li:first-child {
+    margin-bottom: 10px; /* Espaço abaixo do logo */
+    opacity: 1; /* Sempre visível */
+    transform: translateX(0); /* Sem deslocamento */
+    width: auto; /* Largura automática para o logo */
+    background-color: transparent; /* Mantém o fundo transparente para o logo */
+}
+
+/* Estilos para os links (a) dentro dos itens da lista */
+nav ul li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333; /* Cor do texto padrão */
+    margin-left: 5px; /* Espaço entre ícone e texto */
+    width: 100%; /* Garante que o link ocupa toda a largura do botão */
+}
+
+/* Estilos para a imagem do logo */
 .logo {
-    max-height: 40px; /* Ajuste conforme necessário */
+    background-color: white;
+    width: 120px;
+    max-height: 50px;
+    margin-right: 10px;
+    border-radius: 10px;
 }
 
+/* Estilos para o fundo da tela de login */
 .login-background {
     position: absolute;
-    top: 0;
+    top: 100px; /* Ajusta o top para não ser coberto pelo header fixo */
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 100px); /* Ajusta a altura para não ser coberto pelo header fixo */
     background-image: url('../../assets/fundo.avif');
     background-size: cover;
     background-position: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
 }
 
+/* Estilos para o container de login */
 .login-container {
     background-color: rgba(255, 255, 255, 0.9);
     padding: 40px;
@@ -65,17 +131,20 @@ nav ul li {
     text-align: center;
 }
 
+/* Estilos para os grupos de input */
 .input-group {
     margin-bottom: 15px;
     text-align: left;
 }
 
+/* Estilos para as labels dos inputs */
 .input-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
+/* Estilos para os inputs e selects */
 .input-group input,
 .input-group select {
     width: calc(100% - 22px);
@@ -85,6 +154,7 @@ nav ul li {
     box-sizing: border-box;
 }
 
+/* Estilos para o botão de login */
 .login-button {
     background-color: #28a745;
     color: white;
@@ -96,49 +166,36 @@ nav ul li {
     font-size: 16px;
 }
 
+/* Estilos para o hover do botão de login */
 .login-button:hover {
     background-color: #218838;
 }
 
+/* Estilos para a área de resultado */
 .resultado {
     margin-top: 20px;
     font-weight: bold;
 }
 
+/* Estilos para a área de links */
 .link {
     margin-top: 10px;
 }
 
+/* Estilos para os links */
 .link a {
     color: #007bff;
     text-decoration: underline;
 }
 
+/* Estilos para o hover dos links */
 .link a:hover {
     text-decoration: none;
 }
 
+/* Media query para telas menores (máximo 600px de largura) */
 @media (max-width: 600px) {
-    .menu-text {
-        display: none;
+    nav {
+        width: 100%; /* Largura total em telas pequenas */
     }
-
-    #menu {
-        justify-content: space-around;
-        margin-left: -50px;
-    }
-
-    nav ul li {
-        margin: 0 5px;
-    }
-
-    nav ul li span.material-icons {
-        font-size: 10px;
-    }
-
-    .login-container {
-        width: 90%;
-        max-width: 250px;
-        padding: 20px;
-    }
-}
+} /* Fim da media query */

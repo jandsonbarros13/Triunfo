@@ -2,7 +2,6 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { RelatoriosService } from 'src/services/relatorios.service';
 import { UserService } from 'src/services/user.service';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -65,8 +64,8 @@ export class RelatoriosComponent implements OnInit {
         this.users = data;
         if (this.users.length > 0) {
           this.selectedUser = this.users[0].nome;
-          this.applyFilter(); // Aplica o filtro com o primeiro usuário
-          this.loadMoreReports(); // Carrega os relatórios iniciais
+          this.applyFilter();
+          this.loadMoreReports();
         }
         console.log('Usuários carregados:', this.users);
       },
@@ -76,6 +75,7 @@ export class RelatoriosComponent implements OnInit {
       }
     });
   }
+
   totalPages(): number {
     return Math.ceil(this.filteredReports.length / this.pageSize);
   }
@@ -132,182 +132,269 @@ export class RelatoriosComponent implements OnInit {
   }
 
   calculateHours() {
-    let totalHorasDevedoras = 0;
-    let totalHorasExtras = 0;
-    let totalDiferencial = 0;
-    let totalHorasTrabalhadas = 0;
-
+    let totalHorasDevedorasEmMinutos = 0;
+    let totalHorasExtrasEmMinutos = 0;
+    let totalHorasTrabalhadasEmMinutos = 0;
+  
     this.displayedReports.forEach((report) => {
       const usuario = this.users.find(user => user.nome === report.nome);
-
+  
       if (usuario && report.horarioEntrada && report.horarioSaida) {
-        const entradaCadastrada = this.parseTime(usuario.horarioEntrada);
-        const saidaCadastrada = this.parseTime(usuario.horarioSaida);
-        const entradaBatida = this.parseTime(report.horarioEntrada);
-        const saidaBatida = this.parseTime(report.horarioSaida);
-
-        const horasTrabalhadasBatidas = saidaBatida - entradaBatida - 60;
-        const jornadaDiaria = this.calcularJornadaDiaria(report.data);
-        const diferenca = horasTrabalhadasBatidas - (jornadaDiaria * 60);
-
-        const horasDevedoras = this.calcularHorasDevedoras(entradaBatida, entradaCadastrada);
-        if (horasDevedoras < 0) {
-          totalHorasDevedoras += horasDevedoras;
+        const entradaBatidaEmMinutos = this.parseTime(report.horarioEntrada);
+        const saidaBatidaEmMinutos = this.parseTime(report.horarioSaida);
+        const entradaCadastradaEmMinutos = this.parseTime(usuario.horarioEntrada);
+        const saidaCadastradaEmMinutos = this.parseTime(usuario.horarioSaida);
+  
+        const tempoTrabalhadoBrutoEmMinutos = saidaBatidaEmMinutos - entradaBatidaEmMinutos;
+        const tempoTrabalhadoLiquidoEmMinutos = tempoTrabalhadoBrutoEmMinutos > 0 ? tempoTrabalhadoBrutoEmMinutos - 60 : 0;
+  
+        const jornadaDiariaEmMinutos = this.calcularJornadaDiaria(report.data) * 60;
+        const jornadaLiquidaEsperada = Math.max(0, jornadaDiariaEmMinutos - 60);
+  
+        // Cálculo de horas devedoras (mantendo a lógica existente)
+        if (tempoTrabalhadoBrutoEmMinutos > 0) {
+          const faltaMinutos = jornadaLiquidaEsperada - tempoTrabalhadoLiquidoEmMinutos;
+          if (faltaMinutos > 0) {
+            totalHorasDevedorasEmMinutos += faltaMinutos;
+          }
+        } else if (this.selectedUser !== 'Todos') {
+          totalHorasDevedorasEmMinutos += jornadaLiquidaEsperada;
         }
-
-        const horasExtras = this.calcularHorasExtras(saidaBatida, saidaCadastrada);
-        if (horasExtras > 0) {
-          totalHorasExtras += horasExtras;
+  
+        // Cálculo de horas extras (LÓGICA REFINADA E ISOLADA)
+        let excessoEmMinutos = 0;
+        if (entradaBatidaEmMinutos < entradaCadastradaEmMinutos) {
+          excessoEmMinutos += entradaCadastradaEmMinutos - entradaBatidaEmMinutos;
         }
-
-        totalDiferencial += (horasExtras > 0 ? horasExtras : 0) + (diferenca > 0 ? diferenca : 0) - (horasDevedoras < 0 ? Math.abs(horasDevedoras) : 0);
-        totalHorasTrabalhadas += horasTrabalhadasBatidas;
+        if (saidaBatidaEmMinutos > saidaCadastradaEmMinutos) {
+          excessoEmMinutos += saidaBatidaEmMinutos - saidaCadastradaEmMinutos;
+        }
+  
+        totalHorasExtrasEmMinutos += excessoEmMinutos;
+  
+        totalHorasTrabalhadasEmMinutos += tempoTrabalhadoBrutoEmMinutos > 0 ? tempoTrabalhadoBrutoEmMinutos : 0;
+  
+        console.log(`Relatório de ${report.nome} em ${report.data}:`);
+        console.log(`  Entrada Batida: ${report.horarioEntrada} (${entradaBatidaEmMinutos} min)`);
+        console.log(`  Saída Batida: ${report.horarioSaida} (${saidaBatidaEmMinutos} min)`);
+        console.log(`  Entrada Cadastrada: ${usuario.horarioEntrada} (${entradaCadastradaEmMinutos} min)`);
+        console.log(`  Saída Cadastrada: ${usuario.horarioSaida} (${saidaCadastradaEmMinutos} min)`);
+        console.log(`  Trabalhado Bruto: ${tempoTrabalhadoBrutoEmMinutos} min`);
+        console.log(`  Trabalhado Líquido: ${tempoTrabalhadoLiquidoEmMinutos} min`);
+        console.log(`  Jornada Líquida Esperada: ${jornadaLiquidaEsperada} min`);
+        console.log(`  Total Devedoras (acumulado): ${totalHorasDevedorasEmMinutos} min`);
+        console.log(`  Excesso (neste relatório): ${excessoEmMinutos} min`);
+        console.log(`  Total Extras (acumulado): ${totalHorasExtrasEmMinutos} min`);
+        console.log(`  Total Trabalhadas (acumulado): ${totalHorasTrabalhadasEmMinutos} min`);
+  
+      } else if (this.selectedUser !== 'Todos') {
+        const jornadaDiariaEmMinutos = this.calcularJornadaDiaria(report.data) * 60;
+        totalHorasDevedorasEmMinutos += jornadaDiariaEmMinutos - 60;
+        console.log(`Usuário sem registro (${this.selectedUser} em ${report.data}): Total Devedoras (acumulado): ${totalHorasDevedorasEmMinutos} min`);
       }
     });
-
+  
     return {
-      horasDevedoras: this.formatTime(totalHorasDevedoras),
-      horasExtras: this.formatTime(totalHorasExtras),
-      diferencial: this.formatTime(totalDiferencial),
-      horasTrabalhadas: this.formatTime(totalHorasTrabalhadas),
+      horasDevedoras: this.formatTime(totalHorasDevedorasEmMinutos),
+      horasExtras: this.formatTime(totalHorasExtrasEmMinutos),
+      diferencial: this.formatTime(totalHorasExtrasEmMinutos - totalHorasDevedorasEmMinutos),
+      horasTrabalhadas: this.formatTime(totalHorasTrabalhadasEmMinutos),
     };
   }
+
   calcularJornadaDiaria(data: string): number {
     const dataRelatorio = new Date(data.split('/').reverse().join('-'));
     return dataRelatorio.getDay() === 5 ? 8 : 9;
-}
+  }
 
-calcularHorasDevedoras(entradaBatida: number, entradaCadastrada: number): number {
+  calcularHorasDevedoras(entradaBatida: number, entradaCadastrada: number, saidaBatida: number, saidaCadastrada: number, horasTrabalhadasBatidas: number): number {
     const atrasoEntrada = entradaBatida - entradaCadastrada;
-    return atrasoEntrada > 10 ? -atrasoEntrada : 0;
-}
+    const saidaAntecipada = saidaCadastrada - saidaBatida;
 
-calcularHorasExtras(saidaBatida: number, saidaCadastrada: number): number {
+    let totalDevedoras = 0;
+
+    if (atrasoEntrada > 10) {
+      totalDevedoras += atrasoEntrada;
+    }
+
+    if (saidaAntecipada > 10) {
+      totalDevedoras += saidaAntecipada;
+    }
+
+    if (horasTrabalhadasBatidas > 0) {
+      totalDevedoras -= 60;
+    }
+
+    return -totalDevedoras;
+  }
+
+  calcularHorasExtras(saidaBatida: number, saidaCadastrada: number, horasTrabalhadasBatidas: number): number {
     const extraAposSaida = saidaBatida - saidaCadastrada;
+
+    if (horasTrabalhadasBatidas > 0) {
+      if (extraAposSaida > 10) {
+        return extraAposSaida - 60;
+      }
+    }
+
     return extraAposSaida > 10 ? extraAposSaida : 0;
+  }
+// Nova função para calcular o diferencial individual de cada relatório
+calculateIndividualHours(report: any): { diferencial: string } {
+  const usuario = this.users.find(user => user.nome === report.nome);
+  if (usuario && report.horarioEntrada && report.horarioSaida) {
+    const entradaBatidaEmMinutos = this.parseTime(report.horarioEntrada);
+    const saidaBatidaEmMinutos = this.parseTime(report.horarioSaida);
+    const entradaCadastradaEmMinutos = this.parseTime(usuario.horarioEntrada);
+    const saidaCadastradaEmMinutos = this.parseTime(usuario.horarioSaida);
+
+    const tempoTrabalhadoBrutoEmMinutos = saidaBatidaEmMinutos - entradaBatidaEmMinutos;
+    const tempoTrabalhadoLiquidoEmMinutos = tempoTrabalhadoBrutoEmMinutos > 0 ? tempoTrabalhadoBrutoEmMinutos - 60 : 0;
+
+    const jornadaDiariaEmMinutos = this.calcularJornadaDiaria(report.data) * 60;
+    const jornadaLiquidaEsperada = Math.max(0, jornadaDiariaEmMinutos - 60);
+
+    const diferencaEmMinutos = tempoTrabalhadoLiquidoEmMinutos - jornadaLiquidaEsperada;
+    return { diferencial: this.formatTime(diferencaEmMinutos) };
+  } else {
+    return { diferencial: 'N/A' };
+  }
 }
 
-
-  generatePDF() {
-    const doc = new jsPDF();
+generatePDF() {
+  const doc = new jsPDF();
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  const logoUrl = `http://localhost:4200/assets/TRIUNFO%20LOGO%20ALPHA.png`;
+  const logoImg = new Image();
+  logoImg.onload = () => {
+    doc.addImage(logoImg, 'JPEG', 10, 10, 50, 20);
+    doc.setFontSize(16);
+    doc.text('Relatórios', 10, 35);
     doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    const logoUrl = `${environment.apiUrl}/uploads/icone/logo.png`;
-    const logoImg = new Image();
-    logoImg.onload = () => {
-      doc.addImage(logoImg, 'JPEG', 10, 10, 50, 20);
-      doc.setFontSize(16);
-      doc.text('Relatórios', 10, 35);
-      doc.setFontSize(12);
-      doc.setFont('helvetica', 'normal');
+    doc.setFont('helvetica', 'normal');
 
-      let currentY = 50;
-      const spacingY = 20;
-      const startX = 10;
-      const columnSpacing = 40;
-      const titleHeight = 5;
-      const titleBoxPadding = 2;
-      const titleFontSize = 10;
+    let currentY = 50;
+    const spacingY = 20;
+    const startX = 10;
+    const columnSpacing = 40; // Aumentei o espaçamento para testar
+    const titleHeight = 5;
+    const titleBoxPadding = 2;
+    const titleFontSize = 10;
 
-      const titleBoxY = currentY - titleHeight - titleBoxPadding;
-      const titleBoxWidth = startX + columnSpacing * 5;
-      const titleBoxColor = '#007bff';
-      const textColor = '#ffffff';
+    const titleBoxY = currentY - titleHeight - titleBoxPadding;
+    const titleBoxWidth = startX + columnSpacing * 5; // Ajustei a largura para 5 colunas
+    const titleBoxColor = '#007bff';
+    const textColor = '#ffffff';
 
-      doc.setFillColor(titleBoxColor);
-      doc.rect(startX - titleBoxPadding, titleBoxY, titleBoxWidth + 2 * titleBoxPadding, titleHeight + 2 * titleBoxPadding, 'F');
+    doc.setFillColor(titleBoxColor);
+    doc.rect(startX - titleBoxPadding, titleBoxY, titleBoxWidth + 2 * titleBoxPadding, titleHeight + 2 * titleBoxPadding, 'F');
 
-      doc.setFontSize(titleFontSize);
-      doc.setTextColor(textColor);
+    doc.setFontSize(titleFontSize);
+    doc.setTextColor(textColor);
 
-      const titleYText = titleBoxY + titleHeight / 2 + titleFontSize / 2 - 1;
+    const titleYText = titleBoxY + titleHeight / 2 + titleFontSize / 2 - 1;
 
-      doc.text('Foto', startX, titleYText);
-      doc.text('Nome', startX + columnSpacing, titleYText);
-      doc.text('Data', startX + columnSpacing * 2, titleYText);
-      doc.text('Entrada', startX + columnSpacing * 3, titleYText);
-      doc.text('Saída', startX + columnSpacing * 4, titleYText);
+    doc.text('Foto', startX, titleYText);
+    doc.text('Nome', startX + columnSpacing, titleYText);
+    doc.text('Data', startX + columnSpacing * 2, titleYText);
+    doc.text('Entrada', startX + columnSpacing * 3, titleYText);
+    doc.text('Saída', startX + columnSpacing * 4, titleYText);
+    // Adicionando o cabeçalho da coluna "Dif."
+    doc.text('Dif.', startX + columnSpacing * 5, titleYText);
 
-      currentY += spacingY;
-      doc.setFontSize(12);
-      doc.setTextColor('#000000');
+    currentY += spacingY;
+    doc.setFontSize(12);
+    doc.setTextColor('#000000');
 
-      const drawRow = (report: any) => {
-        return new Promise<void>((resolve) => {
-          const img = new Image();
-          img.src = report.fotoUrl;
-          img.onload = () => {
-            doc.line(startX, currentY - 2, startX + columnSpacing * 5, currentY - 2);
-            doc.addImage(img, 'JPEG', startX, currentY, 15, 15);
-            doc.text(report.nome, startX + columnSpacing, currentY + 10);
-            doc.text(report.data, startX + columnSpacing * 2, currentY + 10);
-            doc.text(report.horarioEntrada, startX + columnSpacing * 3, currentY + 10);
-            doc.text(report.horarioSaida, startX + columnSpacing * 4, currentY + 10);
-            doc.line(startX, currentY + 18, startX + columnSpacing * 5, currentY + 18);
+    const drawRow = (report: any) => {
+      return new Promise<void>((resolve) => {
+        const img = new Image();
+        img.src = report.fotoUrl;
+        img.onload = () => {
+          const { diferencial } = this.calculateIndividualHours(report);
+          console.log('Diferencial para', report.nome, 'em', report.data, ':', diferencial); // LOG
+          console.log('Valor de diferencial ANTES de adicionar ao PDF:', diferencial, typeof diferencial); // LOG
+          doc.line(startX, currentY - 2, startX + columnSpacing * 6, currentY - 2); // Ajustei o final da linha
+          doc.addImage(img, 'JPEG', startX, currentY, 15, 15);
+          doc.text(report.nome, startX + columnSpacing, currentY + 10);
+          doc.text(report.data, startX + columnSpacing * 2, currentY + 10);
+          doc.text(report.horarioEntrada, startX + columnSpacing * 3, currentY + 10);
+          doc.text(report.horarioSaida, startX + columnSpacing * 4, currentY + 10);
+          // Adicionando o valor do diferencial na coluna "Dif."
+          doc.text(diferencial, startX + columnSpacing * 5, currentY + 10);
+          doc.line(startX, currentY + 18, startX + columnSpacing * 6, currentY + 18); // Ajustei o final da linha
+          currentY += spacingY;
+          if (currentY > doc.internal.pageSize.height - 30) {
+            doc.addPage();
+            currentY = 10;
+            doc.setFillColor(titleBoxColor);
+            doc.rect(startX - titleBoxPadding, currentY - titleHeight - titleBoxPadding, titleBoxWidth + 2 * titleBoxPadding, titleHeight + 2 * titleBoxPadding, 'F');
+            doc.setFontSize(titleFontSize);
+            doc.setTextColor(textColor);
+            doc.text('Foto', startX, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.text('Nome', startX + columnSpacing, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.text('Data', startX + columnSpacing * 2, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.text('Entrada', startX + columnSpacing * 3, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.text('Saída', startX + columnSpacing * 4, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.text('Dif.', startX + columnSpacing * 5, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.setFontSize(12);
+            doc.setTextColor('#000000');
             currentY += spacingY;
-            if (currentY > doc.internal.pageSize.height - 30) {
-              doc.addPage();
-              currentY = 10;
-              // Redraw the styled title on the new page
-              doc.setFillColor(titleBoxColor);
-              doc.rect(startX - titleBoxPadding, currentY - titleHeight - titleBoxPadding, titleBoxWidth + 2 * titleBoxPadding, titleHeight + 2 * titleBoxPadding, 'F');
-              doc.setFontSize(titleFontSize);
-              doc.setTextColor(textColor);
-              doc.text('Foto', startX, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
-              doc.text('Nome', startX + columnSpacing, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
-              doc.text('Data', startX + columnSpacing * 2, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
-              doc.text('Entrada', startX + columnSpacing * 3, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
-              doc.text('Saída', startX + columnSpacing * 4, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
-              doc.setFontSize(12);
-              doc.setTextColor('#000000');
-              currentY += spacingY;
-            }
-            resolve();
-          };
-          img.onerror = () => {
-            doc.line(startX, currentY - 2, startX + columnSpacing * 5, currentY - 2);
-            doc.text('Imagem', startX, currentY + 10);
-            doc.text(report.nome, startX + columnSpacing, currentY + 10);
-            doc.text(report.data, startX + columnSpacing * 2, currentY + 10);
-            doc.text(report.horarioEntrada, startX + columnSpacing * 3, currentY + 10);
-            doc.text(report.horarioSaida, startX + columnSpacing * 4, currentY + 10);
-            doc.line(startX, currentY + 18, startX + columnSpacing * 5, currentY + 18);
+          }
+          resolve();
+        };
+        img.onerror = () => {
+          const { diferencial } = this.calculateIndividualHours(report);
+          console.log('Diferencial (erro img) para', report.nome, 'em', report.data, ':', diferencial); // LOG
+          console.log('Valor de diferencial ANTES de adicionar ao PDF (erro img):', diferencial, typeof diferencial); // LOG
+          doc.line(startX, currentY - 2, startX + columnSpacing * 6, currentY - 2); // Ajustei o final da linha
+          doc.text('Imagem', startX, currentY + 10);
+          doc.text(report.nome, startX + columnSpacing, currentY + 10);
+          doc.text(report.data, startX + columnSpacing * 2, currentY + 10);
+          doc.text(report.horarioEntrada, startX + columnSpacing * 3, currentY + 10);
+          doc.text(report.horarioSaida, startX + columnSpacing * 4, currentY + 10);
+          // Adicionando o valor do diferencial mesmo em caso de erro da imagem
+          doc.text(diferencial, startX + columnSpacing * 5, currentY + 10);
+          doc.line(startX, currentY + 18, startX + columnSpacing * 6, currentY + 18); // Ajustei o final da linha
+          currentY += spacingY;
+          if (currentY > doc.internal.pageSize.height - 30) {
+            doc.addPage();
+            currentY = 10;
+            doc.setFillColor(titleBoxColor);
+            doc.rect(startX - titleBoxPadding, currentY - titleHeight - titleBoxPadding, titleBoxWidth + 2 * titleBoxPadding, titleHeight + 2 * titleBoxPadding, 'F');
+            doc.setFontSize(titleFontSize);
+            doc.setTextColor(textColor);
+            doc.text('Foto', startX, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.text('Nome', startX + columnSpacing, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.text('Data', startX + columnSpacing * 2, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.text('Entrada', startX + columnSpacing * 3, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.text('Saída', startX + columnSpacing * 4, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.text('Dif.', startX + columnSpacing * 5, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
+            doc.setFontSize(12);
+            doc.setTextColor('#000000');
             currentY += spacingY;
-            if (currentY > doc.internal.pageSize.height - 30) {
-              doc.addPage();
-              currentY = 10;
-              // Redraw the styled title on the new page
-              doc.setFillColor(titleBoxColor);
-              doc.rect(startX - titleBoxPadding, currentY - titleHeight - titleBoxPadding, titleBoxWidth + 2 * titleBoxPadding, titleHeight + 2 * titleBoxPadding, 'F');
-              doc.setFontSize(titleFontSize);
-              doc.setTextColor(textColor);
-              doc.text('Foto', startX, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
-              doc.text('Nome', startX + columnSpacing, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
-              doc.text('Data', startX + columnSpacing * 2, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
-              doc.text('Entrada', startX + columnSpacing * 3, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
-              doc.text('Saída', startX + columnSpacing * 4, currentY - titleHeight / 2 + titleFontSize / 2 - 1);
-              doc.setFontSize(12);
-              doc.setTextColor('#000000');
-              currentY += spacingY;
-            }
-            resolve();
-          };
-        });
-      };
-
-      const drawPromises = this.filteredReports.map((report) => drawRow(report));
-      Promise.all(drawPromises).then(() => {
-        const { horasDevedoras, horasExtras } = this.calculateTotalHours();
-        const finalY = currentY + 10;
-        doc.text(`Horas Devedoras: ${horasDevedoras}`, 10, finalY);
-        doc.text(`Horas Extras: ${horasExtras}`, 10, finalY + 10);
-        const pdfBlob = doc.output('blob');
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-        window.open(pdfUrl, '_blank');
+          }
+          resolve();
+        };
       });
     };
-    logoImg.src = logoUrl;
-  }
+
+    const drawPromises = this.filteredReports.map((report) => drawRow(report));
+    Promise.all(drawPromises).then(() => {
+      const { horasDevedoras, horasExtras, horasTrabalhadas } = this.calculateHours();
+      const finalY = currentY + 10;
+      doc.text(`Horas Devedoras: ${horasDevedoras}`, 10, finalY);
+      doc.text(`Horas Extras: ${horasExtras}`, 10, finalY + 10);
+      doc.text(`Horas Trabalhadas: ${horasTrabalhadas}`, 10, finalY + 20);
+      const pdfBlob = doc.output('blob');
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      window.open(pdfUrl, '_blank');
+    });
+  };
+  logoImg.src = logoUrl;
+}
+
 
   calculateTotalHours() {
     let totalHoursDevedoras = 0;
@@ -316,7 +403,7 @@ calcularHorasExtras(saidaBatida: number, saidaCadastrada: number): number {
     const expectedStart = this.parseTime('07:00');
     const expectedEnd = this.parseTime('17:00');
     const expectedDailyHours = expectedEnd - expectedStart;
-    const gracePeriod = 10; // 10 minutos de tolerância
+    const gracePeriod = 10;
 
     this.filteredReports.forEach(report => {
       const entrada = this.parseTime(report.horarioEntrada);
@@ -324,7 +411,6 @@ calcularHorasExtras(saidaBatida: number, saidaCadastrada: number): number {
 
       const workedHours = saida - entrada;
 
-      // Calcula horas devedoras (entrada atrasada ou saída antecipada)
       if (entrada > expectedStart) {
         totalHoursDevedoras += entrada - expectedStart;
       }
@@ -332,7 +418,6 @@ calcularHorasExtras(saidaBatida: number, saidaCadastrada: number): number {
         totalHoursDevedoras += expectedEnd - saida;
       }
 
-      // Calcula horas extras (saída após o horário com tolerância)
       if (saida > expectedEnd) {
         const extraTime = saida - expectedEnd;
         if (extraTime > gracePeriod) {
@@ -369,19 +454,21 @@ calcularHorasExtras(saidaBatida: number, saidaCadastrada: number): number {
       this.loadMoreReports();
     }
   }
-  // Método para pesquisar relatórios
+
   searchReports() {
-    this.applyFilter(); // Aplica os filtros já existentes
-    this.loadMoreReports(); // Carrega mais relatórios, se necessário
+    this.applyFilter();
+    this.loadMoreReports();
   }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.checkScreenSize(); // Chamada adicionada
+    this.checkScreenSize();
   }
 
   checkScreenSize() {
     this.isSmallScreen = window.innerWidth <= 600;
   }
+
   previousPage() {
     if (this.currentPage > 0) {
       this.currentPage--;

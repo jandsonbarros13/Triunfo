@@ -1,88 +1,52 @@
-<nav class="navbar">
-    <ul id="menu">
-        <li>
-            <img src="../../assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
-        </li>
-        <li *ngIf="userType === 'master' || cargo === 'Extrusor'">
-            <a href="/home">
-                <span class="material-icons">home</span>
-                <span class="menu-text">Home</span>
-            </a>
-        </li>
-        <li *ngIf="userType === 'master'">
-            <a href="/relatorios">
-                <span class="material-icons">assessment</span>
-                <span class="menu-text">Relatórios</span>
-            </a>
-        </li>
-        <li *ngIf="userType === 'master'">
-            <a href="/bobinas">
-                <span class="material-icons">print</span>
-                <span class="menu-text">Bobinas</span>
-            </a>
-        </li>
-        <li *ngIf="userType === 'master'">
-            <a href="/configuracoes">
-                <span class="material-icons">settings</span>
-                <span class="menu-text">Configurações</span>
-            </a>
-        </li>
-        <li>
-            <a (click)="sair()" class="logout-button">
-                <span class="material-icons">logout</span>
-                <span class="menu-text">Sair</span>
-            </a>
-        </li>
-    </ul>
-</nav>  
-  <div class="register-background">
+<div class="register-background">
+    <app-menu></app-menu>
     <div class="register-container">
-        <h1 class="register-title">Registrar Ponto</h1>
+      <h1 class="register-title">Registrar Ponto</h1>
   
-        <div class="profile-photo-container">
-            <img *ngIf="!showCamera && !fotoUrlEntrada"
-                src="assets/foto.png"
-                alt="Foto do Usuário"
-                class="profile-photo"
-                (click)="toggleCamera()" />
-            <img *ngIf="!showCamera && fotoUrlEntrada"
-                [src]="fotoUrlEntrada"
-                alt="Foto Capturada"
-                class="profile-photo"
-                (click)="toggleCamera()" />
-            <webcam *ngIf="showCamera"
-                [trigger]="trigger"
-                (imageCapture)="handleImage($event)"
-                [width]="320"
-                [height]="240">
-            </webcam>
-            <button *ngIf="showCamera" (click)="captureImage()">Capturar Foto</button>
-        </div>
+      <div class="profile-photo-container">
+        <img *ngIf="!showCamera && !fotoUrlEntrada"
+          src="assets/foto.png"
+          alt="Foto do Usuário"
+          class="profile-photo"
+          (click)="toggleCamera()" />
+        <img *ngIf="!showCamera && fotoUrlEntrada"
+          [src]="fotoUrlEntrada"
+          alt="Foto Capturada"
+          class="profile-photo"
+          (click)="toggleCamera()" />
+        <webcam *ngIf="showCamera"
+          [trigger]="trigger"
+          (imageCapture)="handleImage($event)"
+          [width]="320"
+          [height]="240">
+        </webcam>
+        <button *ngIf="showCamera" (click)="captureImage()">Capturar Foto</button>
+      </div>
   
-        <div class="register-item">
-            <input [(ngModel)]="nome" placeholder="Nome do Usuário" required readonly />
-            <label>Nome</label>
-        </div>
+      <div class="register-item">
+        <input [(ngModel)]="nome" placeholder="Nome do Usuário" required readonly />
+        <label>Nome</label>
+      </div>
   
-        <div class="register-item">
-            <input [(ngModel)]="cargo" placeholder="Cargo" required readonly />
-            <label>Cargo</label>
-        </div>
+      <div class="register-item">
+        <input [(ngModel)]="cargo" placeholder="Cargo" required readonly />
+        <label>Cargo</label>
+      </div>
   
-        <div class="register-item">
-            <input [value]="pontoLocal?.horarioEntrada" placeholder="Horário de Entrada" readonly />
-        </div>
+      <div class="register-item">
+        <input [value]="pontoLocal?.horarioEntrada" placeholder="Horário de Entrada" readonly />
+      </div>
   
-        <div class="register-item">
-            <input [value]="pontoLocal?.horarioSaida" placeholder="Horário de Saída" readonly />
-        </div>
+      <div class="register-item">
+        <input [value]="pontoLocal?.horarioSaida" placeholder="Horário de Saída" readonly />
+      </div>
   
-        <button class="register-button" (click)="salvarEntrada()" *ngIf="!mostrarSaidaInput">
-            Salvar Entrada
-        </button>
+      <button class="register-button" (click)="salvarEntrada()" *ngIf="!mostrarSaidaInput">
+        Salvar Entrada
+      </button>
   
-        <button class="register-button" (click)="registrarSaida()" *ngIf="mostrarSaidaInput">
-            Registrar Saída
-        </button>
+      <button class="register-button" (click)="registrarSaida()" *ngIf="mostrarSaidaInput">
+        Registrar Saída
+      </button>
     </div>
   </div>

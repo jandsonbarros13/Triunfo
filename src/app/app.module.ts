@@ -15,6 +15,7 @@ import { PrimeiroAcessoComponent } from './primeiro-acesso/primeiro-acesso.compo
 import { ConfiguracoesComponent } from './configuracoes/configuracoes.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WebcamModule } from 'ngx-webcam';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { WebcamModule } from 'ngx-webcam';
     RegisterComponent,
     BobinaComponent,
     PrimeiroAcessoComponent,
-    ConfiguracoesComponent
+    ConfiguracoesComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
