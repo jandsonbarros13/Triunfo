@@ -1,8 +1,12 @@
-html,
 body {
   height: 100%;
   margin: 0;
   overflow-x: hidden;
+}
+
+.datepicker-field {
+  position: relative; /* Para o posicionamento do calendário */
+  display: none;
 }
 
 nav {
@@ -55,212 +59,290 @@ nav ul li {
   align-items: center;
   flex-direction: column;
   padding-top: 50px;
-}
 
-.relatorios-container .table-container {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 15px;
-  width: 95%;
-  max-width: 100%;
-}
+  .table-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    width: 95%;
+    max-width: 100%;
 
-.relatorios-container .table-container .header {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 15px;
-}
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 15px;
 
-.relatorios-container .table-container .header h1 {
-  margin: 0 0 8px 0;
-  font-size: 1.3em;
-  color: #003366;
-}
+      h1 {
+        margin: 0 0 8px 0;
+        font-size: 1.3em;
+        color: #003366;
+      }
 
-.relatorios-container .table-container .header .header-buttons {
-  display: flex;
-  flex-direction: column; // Mantém a direção em coluna para telas pequenas
-  align-items: stretch; // Estende os botões para preencher a largura
-  width: 100%;
-  gap: 8px;
-}
+      .header-buttons {
+        display: flex;
+        flex-direction: column; // Mantém a direção em coluna para telas pequenas
+        align-items: stretch; // Estende os botões para preencher a largura
+        width: 100%;
+        gap: 8px;
 
-.relatorios-container .table-container .header .header-buttons button {
-  width: 100%; // Garante que os botões ocupem toda a largura do container
-  margin-bottom: 5px;
-  box-sizing: border-box; // Garante que padding e border não alterem a largura total
-}
+        button {
+          width: 100%; // Garante que os botões ocupem toda a largura do container
+          margin-bottom: 5px;
+          box-sizing: border-box; // Garante que padding e border não alterem a largura total
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          padding: 8px 12px;
+          cursor: pointer;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
 
-.relatorios-container
-  .table-container
-  .header
-  .header-buttons
-  .button-search,
-.relatorios-container
-  .table-container
-  .header
-  .header-buttons
-  .button-print {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-}
+          &:hover {
+            background-color: #0056b3;
+          }
 
-.relatorios-container
-  .table-container
-  .header
-  .header-buttons
-  .button-search:hover,
-.relatorios-container
-  .table-container
-  .header
-  .header-buttons
-  .button-print:hover {
-  background-color: #0056b3;
-}
+          .material-icons {
+            margin-right: 3px;
+            font-size: 18px;
+          }
 
-.relatorios-container .table-container .header .header-buttons .material-icons {
-  margin-right: 3px;
-  font-size: 18px;
-}
-
-.relatorios-container .table-container table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9em;
-}
-
-.relatorios-container .table-container th,
-.relatorios-container .table-container td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  color: #003366;
-}
-
-.relatorios-container .table-container th {
-  background-color: #f2f2f2;
-}
-
-.relatorios-container .table-container tr:hover {
-  background-color: #f1f1f1;
-}
-
-.relatorios-container .filter-container {
-  margin-bottom: 15px;
-  width: 95%;
-  max-width: 100%;
-}
-
-.relatorios-container .filter-container label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.relatorios-container .filter-container select,
-.relatorios-container .filter-container input {
-  width: calc(100% - 22px);
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-bottom: 8px;
-}
-
-.relatorios-container .summary-container {
-  margin-top: 15px;
-  width: 95%;
-  max-width: 100%;
-}
-
-@media (max-width: 600px) {
-  .menu-text {
-    display: none;
-  }
-  .logo {
-    width: 40px;
-  }
-
-  #menu {
-    justify-content: space-around;
-    width: 70%;
-  }
-
-  nav ul li {
-    margin: 0;
-    width: 30px;
-    justify-content: center;
-    margin-left: -30px;
-  }
-
-  nav ul li span.material-icons {
-    font-size: 10px;
-  }
-
-  .relatorios-container .table-container,
-  .relatorios-container .filter-container,
-  .relatorios-container .summary-container {
-    width: 90%;
-    padding: 20px;
-    margin: 10px;
-  }
-
-  .relatorios-container .filter-container select,
-  .relatorios-container .filter-container input {
-    width: calc(100% - 16px);
-    padding: 6px;
-    margin-bottom: 6px;
-  }
-
-  .relatorios-container .table-container .header {
-    align-items: center;
-    text-align: center;
-  }
-
-  .relatorios-container .table-container .header-buttons {
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-
-  .relatorios-container .table-container .header-buttons button {
-    width: 90%;
-    margin-bottom: 5px;
-  }
-  table {
-    th,
-    td {
-      padding: 6px;
-      text-align: center;
+          &.button-calendar {
+            margin-left: 0px;
+          }
+        }
+      }
     }
 
-    th {
-      .column-text {
-        display: none;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9em;
+
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        color: #003366;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      tr:hover {
+        background-color: #f1f1f1;
       }
     }
   }
-  .relatorios-container .table-container th span.material-icons,
-  .relatorios-container .table-container td img {
-    font-size: 16px;
-    width: 22px;
-    height: 22px;
+
+  .filter-container {
+    margin-bottom: 15px;
+    width: 95%;
+    max-width: 100%;
+    display: flex;
+    gap: 10px; /* Espaçamento entre os elementos do filtro */
+    align-items: center; /* Alinhar verticalmente os elementos */
+    flex-wrap: wrap; /* Quebrar os elementos em telas menores */
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      width: auto; /* Largura automática para o label */
+    }
+
+    select,
+    input {
+      width: calc(33% - 15px); /* Aproximadamente 1/3 da largura com margem */
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 8px;
+    }
+
+    .filter-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      margin-left: 5px; /* Espaçamento entre os botões de filtro */
+
+      .material-icons {
+        margin-right: 5px;
+        font-size: 18px;
+      }
+
+      &:hover {
+        background-color: #0056b3;
+      }
+
+      &:focus {
+        outline: none; /* Remover a borda de foco padrão */
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Adicionar um destaque de foco */
+      }
+
+      &.limpar-button {
+        background-color: white;
+        color: red;
+        border: 1px solid red;
+
+        &:hover {
+          background-color: #ffe0e0;
+        }
+
+        .limpar-icon {
+          color: red;
+          margin-right: 5px;
+          font-size: 18px;
+        }
+      }
+    }
   }
-  table tr th.cargo-col,
-  table tr td.cargo-col {
-    display: none;
+
+  .summary-container {
+    margin-top: 15px;
+    width: 95%;
+    max-width: 100%;
   }
-  table th.cargo-col,
-  table td.cargo-col {
-    display: none;
+
+  .pagination-controls {
+    margin-top: 15px;
+    width: 95%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    button {
+      padding: 8px 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      color: #333;
+      cursor: pointer;
+
+      &:disabled {
+        background-color: #eee;
+        color: #999;
+        cursor: not-allowed;
+      }
+
+      &:not(:disabled):hover {
+        background-color: #f0f0f0;
+      }
+    }
+
+    span {
+      align-self: center;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .relatorios-container {
+    .table-container,
+    .filter-container,
+    .summary-container {
+      width: 90%;
+      padding: 20px;
+      margin: 10px;
+    }
+
+    .filter-container {
+      flex-direction: column;
+      align-items: stretch;
+
+      label,
+      select,
+      input,
+      .filter-button,
+      .limpar-button {
+        width: 100%;
+        margin-bottom: 8px;
+      }
+    }
+
+    .table-container {
+      .header {
+        align-items: center;
+        text-align: center;
+
+        .header-buttons {
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+
+          button {
+            width: 90%;
+            margin-bottom: 5px;
+          }
+        }
+      }
+
+      table {
+        th,
+        td {
+          padding: 6px;
+          text-align: center;
+        }
+
+        th .column-text {
+          display: none;
+        }
+
+        th span.material-icons,
+        td img {
+          font-size: 16px;
+          width: 22px;
+          height: 22px;
+        }
+
+        tr th.cargo-col,
+        tr td.cargo-col,
+        th.cargo-col,
+        td.cargo-col {
+          display: none;
+        }
+      }
+    }
+  }
+
+  nav {
+    padding: 15px;
+
+    #menu {
+      justify-content: space-around;
+      width: 70%;
+    }
+
+    ul li {
+      margin: 0;
+      width: 30px;
+      justify-content: center;
+      margin-left: -30px;
+
+      span.material-icons {
+        font-size: 10px;
+      }
+    }
+
+    .menu-text {
+      display: none;
+    }
+
+    .logo {
+      width: 40px;
+    }
   }
 }
 

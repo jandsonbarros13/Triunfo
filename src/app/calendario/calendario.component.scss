@@ -1,0 +1,61 @@
+.calendario-container {
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  .com-ponto {
+    background-color: lightgreen; /* Ou a cor que preferir */
+    border-radius: 50%; /* Para um destaque circular */
+    color: black;
+    font-weight: bold;
+  }
+  .sem-ponto {
+    background-color: lightcoral; /* Ou a cor que preferir para indicar ausência */
+    color: black;
+  }
+  .calendario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+  
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2em;
+      padding: 5px;
+    }
+  }
+  
+  .calendario-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
+  
+  .dia-semana {
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .dia {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  
+    &.vazio {
+      background: none;
+      border: none;
+      cursor: default;
+    }
+  }

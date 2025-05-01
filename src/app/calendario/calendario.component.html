@@ -1,0 +1,17 @@
+<div class="calendario-container">
+  <div class="calendario-header">
+    <button (click)="voltarMes()">&#8249;</button>
+    <h2>{{ nomeMesAtual }} {{ anoAtual }}</h2>
+    <button (click)="avancarMes()">&#8250;</button>
+  </div>
+  <div class="calendario-grid">
+    <div *ngFor="let diaSemana of diasDaSemana" class="dia-semana">{{ diaSemana }}</div>
+    <div *ngFor="let dia of diasNoMes" class="dia"
+         [class.vazio]="!dia"
+         (click)="selecionarDia(dia)"
+         [class.com-ponto]="temPonto(dia)"
+         [class.sem-ponto]="naoTemPonto(dia)">
+      {{ dia }}
+    </div>
+  </div>
+</div>
