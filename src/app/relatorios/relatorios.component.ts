@@ -1,9 +1,14 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { RelatoriosService } from 'src/services/relatorios.service';
 import { UserService } from 'src/services/user.service';
 import jsPDF from 'jspdf';
 import { environment } from 'src/environments/environment';
-
 
 @Component({
   selector: 'app-relatorios',
@@ -26,7 +31,7 @@ export class RelatoriosComponent implements OnInit {
   expandedImageUrl: string = '';
   isImageExpanded: boolean = false;
   diasDePontoParaCalendario: Date[] = [];
-  diasSemPontoParaCalendario: Date[] = []; 
+  diasSemPontoParaCalendario: Date[] = [];
   exibirCalendario: boolean = false;
   summaryHours: any = {
     horasDevedoras: '00:00',
@@ -60,7 +65,12 @@ export class RelatoriosComponent implements OnInit {
         this.applyFilter();
         this.loadMoreReports();
         this.extrairDiasDePonto(this.reports);
-        this.extrairDiasSemPonto(this.reports, this.startDate, this.endDate, this.selectedUser); // Chamada inicial
+        this.extrairDiasSemPonto(
+          this.reports,
+          this.startDate,
+          this.endDate,
+          this.selectedUser
+        ); // Chamada inicial
       },
       error: (error) => {
         console.error('Erro ao buscar relatórios:', error);
@@ -70,13 +80,18 @@ export class RelatoriosComponent implements OnInit {
   }
   @HostListener('document:click', ['$event'])
   clickOutside(event: any) {
-    if (this.exibirCalendario && this.calendarioContainer && this.calendarioContainer.nativeElement && !this.calendarioContainer.nativeElement.contains(event.target)) {
+    if (
+      this.exibirCalendario &&
+      this.calendarioContainer &&
+      this.calendarioContainer.nativeElement &&
+      !this.calendarioContainer.nativeElement.contains(event.target)
+    ) {
       this.exibirCalendario = false;
     }
   }
 
   extrairDiasDePonto(relatorios: any[]) {
-    this.diasDePontoParaCalendario = relatorios.map(report => {
+    this.diasDePontoParaCalendario = relatorios.map((report) => {
       const [dia, mes, ano] = report.data.split('/');
       return new Date(+ano, +mes - 1, +dia);
     });
@@ -92,7 +107,12 @@ export class RelatoriosComponent implements OnInit {
     this.exibirCalendario = !this.exibirCalendario;
     if (this.exibirCalendario) {
       this.extrairDiasDePonto(this.filteredReports);
-      this.extrairDiasSemPonto(this.filteredReports, this.startDate, this.endDate, this.selectedUser); // Chamada ao abrir o calendário
+      this.extrairDiasSemPonto(
+        this.filteredReports,
+        this.startDate,
+        this.endDate,
+        this.selectedUser
+      ); // Chamada ao abrir o calendário
     }
   }
   receberDataDoCalendario(data: Date) {
@@ -100,7 +120,12 @@ export class RelatoriosComponent implements OnInit {
     this.startDate = data.toISOString().split('T')[0];
     this.endDate = data.toISOString().split('T')[0];
     this.applyFilter();
-    this.extrairDiasSemPonto(this.filteredReports, this.startDate, this.endDate, this.selectedUser);
+    this.extrairDiasSemPonto(
+      this.filteredReports,
+      this.startDate,
+      this.endDate,
+      this.selectedUser
+    );
     this.exibirCalendario = false;
   }
   gerarListaDeDias(startDate: string, endDate: string): Date[] {
@@ -116,21 +141,30 @@ export class RelatoriosComponent implements OnInit {
     return dias;
   }
 
-  extrairDiasSemPonto(relatorios: any[], startDate: string, endDate: string, selectedUser: string) {
+  extrairDiasSemPonto(
+    relatorios: any[],
+    startDate: string,
+    endDate: string,
+    selectedUser: string
+  ) {
     this.diasSemPontoParaCalendario = [];
     if (selectedUser && selectedUser !== 'Todos' && startDate && endDate) {
       const todosOsDias = this.gerarListaDeDias(startDate, endDate);
       const diasComPontoDoUsuario = relatorios
-        .filter(report => report.nome === selectedUser)
-        .map(report => {
+        .filter((report) => report.nome === selectedUser)
+        .map((report) => {
           const [dia, mes, ano] = report.data.split('/');
           return new Date(+ano, +mes - 1, +dia).toDateString();
         });
 
-      this.diasSemPontoParaCalendario = todosOsDias.filter(dia => {
+      this.diasSemPontoParaCalendario = todosOsDias.filter((dia) => {
         const diaString = dia.toDateString();
         const diaDaSemana = dia.getDay(); // 0 (Dom) a 6 (Sáb)
-        return !diasComPontoDoUsuario.includes(diaString) && diaDaSemana !== 0 && diaDaSemana !== 6;
+        return (
+          !diasComPontoDoUsuario.includes(diaString) &&
+          diaDaSemana !== 0 &&
+          diaDaSemana !== 6
+        );
       });
       console.log('Dias sem ponto extraídos:', this.diasSemPontoParaCalendario);
     }
@@ -155,7 +189,6 @@ export class RelatoriosComponent implements OnInit {
   toggleDatepicker() {
     this.isDatepickerVisible = !this.isDatepickerVisible;
   }
-
 
   totalPages(): number {
     return Math.ceil(this.filteredReports.length / this.pageSize);
@@ -221,7 +254,12 @@ export class RelatoriosComponent implements OnInit {
       (user) => user.nome === this.selectedUser
     );
     this.extrairDiasDePonto(this.filteredReports);
-    this.extrairDiasSemPonto(this.filteredReports, this.startDate, this.endDate, this.selectedUser); // Atualiza dias sem ponto ao filtrar
+    this.extrairDiasSemPonto(
+      this.filteredReports,
+      this.startDate,
+      this.endDate,
+      this.selectedUser
+    ); // Atualiza dias sem ponto ao filtrar
   }
   limparFiltros() {
     this.selectedUser = 'Todos';
@@ -236,7 +274,6 @@ export class RelatoriosComponent implements OnInit {
     console.log('Relatórios exibidos:', this.displayedReports);
     this.summaryHours = this.calculateHours(this.displayedReports);
   }
-  
 
   calculateHours(reports: any[]): any {
     let totalHorasDevedorasEmMinutos = 0;
@@ -247,6 +284,12 @@ export class RelatoriosComponent implements OnInit {
 
     reports.forEach((report) => {
       const usuario = this.users.find((user) => user.nome === report.nome);
+      const [dia, mes, ano] = report.data.split('/');
+      const dataRelatorio = new Date(+ano, +mes - 1, +dia);
+      const diaDaSemana = dataRelatorio.getDay(); // 0 (Domingo) a 6 (Sábado)
+      const isSextaFeira = diaDaSemana === 5;
+
+      let horasDevedorasDia = 0; // Variável para acumular as horas devedoras do dia
 
       if (usuario && report.horarioEntrada && report.horarioSaida) {
         const entradaBatidaEmMinutos = this.parseTime(report.horarioEntrada);
@@ -273,13 +316,19 @@ export class RelatoriosComponent implements OnInit {
         const atrasoEntrada =
           entradaBatidaEmMinutos - entradaCadastradaEmMinutos;
         if (atrasoEntrada > toleranciaEmMinutos) {
-          totalHorasDevedorasEmMinutos += atrasoEntrada;
+          horasDevedorasDia += atrasoEntrada;
         }
 
         const saidaAntecipada = saidaCadastradaEmMinutos - saidaBatidaEmMinutos;
         if (saidaAntecipada > toleranciaEmMinutos) {
-          totalHorasDevedorasEmMinutos += saidaAntecipada;
+          horasDevedorasDia += saidaAntecipada;
+        } // Aplica a regra da sexta-feira para horas devedoras
+
+        if (isSextaFeira && horasDevedorasDia > 0) {
+          horasDevedorasDia = Math.max(0, horasDevedorasDia - 60); // Garante que não fique negativo
         }
+
+        totalHorasDevedorasEmMinutos += horasDevedorasDia;
 
         const diferencaEntradaExtra =
           entradaCadastradaEmMinutos - entradaBatidaEmMinutos;
@@ -298,8 +347,13 @@ export class RelatoriosComponent implements OnInit {
             ? tempoTrabalhadoLiquidoEmMinutos
             : 0;
       } else if (this.selectedUser !== 'Todos') {
-        const jornadaDiariaEmMinutos =
-          this.calcularJornadaDiaria(report.data) * 60;
+        let jornadaDiariaEmMinutos =
+          this.calcularJornadaDiaria(report.data) * 60; // Ajusta a jornada esperada na sexta-feira para horas devedoras (se aplicável)
+
+        if (isSextaFeira) {
+          jornadaDiariaEmMinutos -= 60;
+        }
+
         totalHorasDevedorasEmMinutos +=
           jornadaDiariaEmMinutos - tempoAlmocoEmMinutos;
       }

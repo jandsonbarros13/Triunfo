@@ -18,7 +18,7 @@ export class CalendarioComponent implements OnInit, OnChanges {
 
   @Output() dataSelecionada = new EventEmitter<Date>();
   @Input() diasComPonto: Date[] = [];
-  @Input() diasSemPonto: Date[] = []; // Novo array para receber as datas sem ponto
+  @Input() diasSemPonto: Date[] = [];
 
   constructor() {
     const hoje = new Date();
@@ -30,6 +30,7 @@ export class CalendarioComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.gerarCalendario();
+    this.logSextasFeirasDoMes(); // Chamada para logar as sextas-feiras ao carregar
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -54,6 +55,21 @@ export class CalendarioComponent implements OnInit, OnChanges {
     }
   }
 
+  logSextasFeirasDoMes() {
+    const sextasFeiras: Date[] = [];
+    const primeiroDiaDoMes = new Date(this.anoAtual, this.mesAtual, 1);
+    const ultimoDiaDoMes = new Date(this.anoAtual, this.mesAtual + 1, 0);
+
+    for (let i = 1; i <= ultimoDiaDoMes.getDate(); i++) {
+      const data = new Date(this.anoAtual, this.mesAtual, i);
+      if (data.getDay() === 5) { // 5 representa sexta-feira (0 = Domingo, 1 = Segunda, ...)
+        sextasFeiras.push(data);
+      }
+    }
+
+    console.log('Sextas-feiras do mês:', sextasFeiras);
+  }
+
   voltarMes() {
     this.mesAtual--;
     if (this.mesAtual < 0) {
@@ -62,6 +78,7 @@ export class CalendarioComponent implements OnInit, OnChanges {
     }
     this.nomeMesAtual = this.nomeMeses[this.mesAtual];
     this.gerarCalendario();
+    this.logSextasFeirasDoMes(); // Atualiza as sextas-feiras ao mudar de mês (opcional)
   }
 
   avancarMes() {
@@ -72,6 +89,7 @@ export class CalendarioComponent implements OnInit, OnChanges {
     }
     this.nomeMesAtual = this.nomeMeses[this.mesAtual];
     this.gerarCalendario();
+    this.logSextasFeirasDoMes(); // Atualiza as sextas-feiras ao mudar de mês (opcional)
   }
 
   selecionarDia(dia: number | null) {
