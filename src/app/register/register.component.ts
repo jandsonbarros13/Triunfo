@@ -18,15 +18,19 @@ export class RegisterComponent implements OnInit {
     horarioSaida: '',
     foto: '',
     userType: 'master',
-    fotoTamanho: 'small' // Adicionando a nova propriedade
+    fotoTamanho: 'small'
   };
 
   usuarios: any[] = [];
+  displayedUsuarios: any[] = [];
   isEditing: boolean = false;
   currentUserId: string | null = null;
 
   showCamera: boolean = false;
   public trigger: Subject<void> = new Subject<void>();
+
+  pageSize: number = 5;
+  currentPage: number = 0;
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -55,6 +59,7 @@ export class RegisterComponent implements OnInit {
     this.apiService.getUsuarios().subscribe(
       (data) => {
         this.usuarios = data;
+        this.updateDisplayedUsuarios();
       },
       (error) => {
         this.showAlert('Erro ao buscar usuários. Verifique a conexão.');
@@ -109,7 +114,7 @@ export class RegisterComponent implements OnInit {
       horarioSaida: '',
       foto: '',
       userType: 'user',
-      fotoTamanho: 'small' // Resetando a nova propriedade
+      fotoTamanho: 'small'
     };
     this.isEditing = false;
     this.currentUserId = null;
@@ -133,6 +138,27 @@ export class RegisterComponent implements OnInit {
 
   public handleImage(webcamImage: any): void {
     this.userData.foto = webcamImage.imageAsDataUrl;
-    this.showCamera = false; // Fecha a câmera após capturar a imagem
+    this.showCamera = false;
+  }
+
+  updateDisplayedUsuarios() {
+    const startIndex = this.currentPage * this.pageSize;
+    this.displayedUsuarios = this.usuarios.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  nextPage() {
+    this.currentPage++;
+    this.updateDisplayedUsuarios();
+  }
+
+  previousPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.updateDisplayedUsuarios();
+    }
+  }
+
+  isLastPage(): boolean {
+    return (this.currentPage + 1) * this.pageSize >= this.usuarios.length;
   }
 }

@@ -105,11 +105,17 @@
       Usuários Cadastrados
     </h2>
     <ul>
-      <li *ngFor="let usuario of usuarios | slice:0:5">
-        <strong>{{ usuario.nome }}</strong> - {{ usuario.cargo }}
+      <li *ngFor="let usuario of displayedUsuarios">
+        <strong>{{ usuario.username }}</strong> - {{ usuario.cargo }}
         <button (click)="editarUsuario(usuario)">Editar</button>
         <button (click)="excluirUsuario(usuario._id)">Excluir</button>
       </li>
     </ul>
+
+    <div class="pagination-controls" *ngIf="usuarios.length > pageSize">
+      <button (click)="previousPage()" [disabled]="currentPage === 0">Anterior</button>
+      <span>Página {{ currentPage + 1 }}</span>
+      <button (click)="nextPage()" [disabled]="isLastPage()">Próxima</button>
+    </div>
   </div>
 </div>
