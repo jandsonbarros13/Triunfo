@@ -4,6 +4,11 @@
         <li>
           <img src="../../assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
         </li>
+        <li *ngIf="userType === 'master'">
+        <a routerLink="/home">
+          <span class="material-icons">calculate</span> <span class="menu-text">Calculadora</span>
+        </a>
+      </li>
         <li *ngIf="userType === 'master' || cargo === 'Extrusor'">
           <a routerLink="/bater-ponto">
             <span class="material-icons">access_time</span>
