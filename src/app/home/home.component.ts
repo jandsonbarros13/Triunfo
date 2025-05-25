@@ -20,11 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     cargo: string | null = null;
     private inactivityTimeout: any;
 
-    pesosBasePadrao = [
-        { _id: 'padrao-8650', nome: 'Bobina 97', peso: 8.650 },
-        { _id: 'padrao-9030', nome: 'Bobina 100', peso: 9.030 },
-        { _id: 'padrao-9170', nome: 'Bobina 102', peso: 9.170 },
-    ];
+    // A variável pesosBasePadrao foi removida daqui.
 
     constructor(
         private bobinaService: BobinaService,
@@ -66,11 +62,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     listarBobinas() {
         this.bobinaService.listarBobinas().subscribe(
             (data) => {
-                this.bobinas = this.pesosBasePadrao.concat(data);
+                // Atribui diretamente os dados do serviço à variável bobinas.
+                this.bobinas = data;
+                if (!data || data.length === 0) {
+                    console.warn('Nenhuma bobina retornada pelo serviço ou lista vazia.');
+                    // Você pode querer mostrar uma mensagem para o usuário aqui
+                }
             },
             (error) => {
                 console.error('Erro ao listar bobinas', error);
-                alert('Erro ao carregar as bobinas. Tente novamente mais tarde.');
+                alert('Erro ao carregar as bobinas. Verifique a conexão ou tente novamente mais tarde.');
+                // Define bobinas como um array vazio em caso de erro para evitar problemas no template.
+                this.bobinas = [];
             }
         );
     }
@@ -88,12 +91,25 @@ export class HomeComponent implements OnInit, OnDestroy {
         const bobinaSelecionada = this.bobinas.find(bobina => bobina._id === this.pesoBaseSelecionado);
 
         if (!bobinaSelecionada) {
-            alert('Peso da bobina selecionado não encontrado.');
+            alert('Bobina selecionada não encontrada. Verifique se as bobinas foram carregadas corretamente.');
             return;
         }
 
-        const pesoBaseSelecionado = bobinaSelecionada.peso;
-        const x = (pesoBaseSelecionado * 100) / this.pesoBobina;
+        // Certifique-se de que bobinaSelecionada.peso existe e é um número
+        if (typeof bobinaSelecionada.peso !== 'number') {
+            alert('O peso da bobina selecionada é inválido.');
+            return;
+        }
+
+        const pesoBaseNum = bobinaSelecionada.peso;
+
+        // Certifique-se de que pesoBobina não é zero para evitar divisão por zero
+        if (this.pesoBobina === 0) {
+            alert('O peso da bobina não pode ser zero.');
+            return;
+        }
+
+        const x = (pesoBaseNum * 100) / this.pesoBobina;
         const novoRPM = (x * this.rosca) / 100;
         this.resultado = novoRPM;
     }
@@ -106,6 +122,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     formatarPeso(peso: number): string {
+        // Adiciona uma verificação para o caso de 'peso' não ser um número
+        if (typeof peso !== 'number') {
+            return 'N/A';
+        }
         return peso.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 3 }).replace('.', ',');
     }
 
@@ -116,43 +136,55 @@ export class HomeComponent implements OnInit, OnDestroy {
     resetInactivityTimer() {
         clearTimeout(this.inactivityTimeout);
         this.inactivityTimeout = setTimeout(() => {
-            alert('Você ficou inativo por 15 minutos. Redirecionando para a tela de login.');
-            this.router.navigate(['/login']);
-        }, 900000);
+            // Adicionar verificação se o usuário ainda está na página antes de alertar/redirecionar
+            if (this.router.url === '/' || this.router.url === '/home') { // Ajuste as rotas conforme necessário
+                alert('Você ficou inativo por 15 minutos. Redirecionando para a tela de login.');
+                this.authService.logout(); // Opcional: Limpar sessão/token
+                this.router.navigate(['/login']);
+            }
+        }, 900000); // 15 minutos (900000 ms)
+    }
+
+    // Envolver resetInactivityTimer em uma arrow function para manter o contexto do 'this'
+    private handleUserActivity = () => {
+        this.resetInactivityTimer();
     }
 
     monitorarAtividade() {
-        const activityEvents = ['click', 'mousemove', 'keydown'];
+        const activityEvents = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'];
         activityEvents.forEach(event => {
-            window.addEventListener(event, () => this.resetInactivityTimer());
+            window.addEventListener(event, this.handleUserActivity, true); // Usar capturing phase pode ser mais confiável
         });
     }
 
     ngOnDestroy() {
         clearTimeout(this.inactivityTimeout);
-        const activityEvents = ['click', 'mousemove', 'keydown'];
+        const activityEvents = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'];
         activityEvents.forEach(event => {
-            window.removeEventListener(event, this.resetInactivityTimer);
+            window.removeEventListener(event, this.handleUserActivity, true);
         });
-        document.removeEventListener('click', this.closeMenuOutsideClick); // Remover o listener
+        document.removeEventListener('click', this.closeMenuOutsideClick);
     }
 
-    // Nova função para controlar a visibilidade do menu
     toggleMenu() {
         this.isMenuOpen = !this.isMenuOpen;
         if (this.isMenuOpen) {
-            document.addEventListener('click', this.closeMenuOutsideClick);
+            // Adiciona o listener um pouco depois para evitar que o próprio clique de abrir feche o menu
+            setTimeout(() => document.addEventListener('click', this.closeMenuOutsideClick), 0);
         } else {
             document.removeEventListener('click', this.closeMenuOutsideClick);
         }
     }
 
-    // Função para fechar o menu ao clicar fora
     closeMenuOutsideClick = (event: MouseEvent) => {
         const targetElement = event.target as HTMLElement;
-        const menuElement = document.querySelector('nav');
-        if (menuElement && !menuElement.contains(targetElement) && this.isMenuOpen) {
+        // Tenta encontrar o elemento do menu de forma mais robusta
+        const menuContainer = document.querySelector('app-menu'); // Assumindo que <app-menu> é o container do seu menu
+
+        // Verifica se o clique foi fora do componente app-menu
+        if (menuContainer && !menuContainer.contains(targetElement) && this.isMenuOpen) {
             this.isMenuOpen = false;
+            document.removeEventListener('click', this.closeMenuOutsideClick); // Remove o listener após fechar
         }
     };
 }
