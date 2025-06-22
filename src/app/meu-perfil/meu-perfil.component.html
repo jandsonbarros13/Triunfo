@@ -1,0 +1,128 @@
+<div class="tela">
+  <app-menu></app-menu>
+  <div class="profile-container">
+    <img src="assets/TRIUNFO LOGO ALPHA.png" alt="Logo Triunfo" class="logo" />
+    <h1 class="profile-title">Meu Perfil</h1>
+
+    <div class="profile-photo-container">
+      <img
+        [src]="userData.foto || 'assets/foto.png'"
+        alt="Foto do Usuário"
+        class="profile-photo"
+        (click)="capturarFoto()"
+        style="cursor: pointer"
+      />
+    </div>
+
+    <div *ngIf="showCamera" class="webcam-container">
+      <webcam
+        [trigger]="trigger"
+        (imageCapture)="handleImage($event)"
+        [width]="320"
+        [height]="240"
+      ></webcam>
+    </div>
+
+    <button (click)="captureImage()" *ngIf="showCamera" style="margin-top: 20px">
+      Capturar Foto
+    </button>
+    <button (click)="toggleCamera()" *ngIf="showCamera" style="margin-top: 20px">
+      Fechar Câmera
+    </button>
+
+    <form (ngSubmit)="salvarPerfil()" #profileForm="ngForm">
+      <div class="form-group">
+        <label for="nome">Nome:</label>
+        <input
+          type="text"
+          id="nome"
+          [(ngModel)]="userData.nome"
+          name="nome"
+          placeholder="Nome Completo"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          [(ngModel)]="userData.username"
+          name="username"
+          placeholder="Username"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha:</label>
+        <div class="password-input-group">
+          <input
+            [type]="showPassword ? 'text' : 'password'" id="password"
+            [(ngModel)]="userData.password"
+            name="password"
+            placeholder="Deixe em branco para não alterar"
+          />
+          <button type="button" (click)="togglePasswordVisibility()">
+            {{ showPassword ? 'Ocultar' : 'Visualizar' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="cargo">Cargo:</label>
+        <input
+          type="text"
+          id="cargo"
+          [(ngModel)]="userData.cargo"
+          name="cargo"
+          placeholder="Cargo"
+          disabled
+          class="disabled-input"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="userType">Tipo de Usuário:</label>
+        <input
+          type="text"
+          id="userType"
+          [(ngModel)]="userData.userType"
+          name="userType"
+          disabled
+          class="disabled-input"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="horarioEntrada">Horário de Entrada:</label>
+        <input
+          type="time"
+          id="horarioEntrada"
+          [(ngModel)]="userData.horarioEntrada"
+          name="horarioEntrada"
+          disabled
+          class="disabled-input"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="horarioSaida">Horário de Saída:</label>
+        <input
+          type="time"
+          id="horarioSaida"
+          [(ngModel)]="userData.horarioSaida"
+          name="horarioSaida"
+          disabled
+          class="disabled-input"
+        />
+      </div>
+
+      <button type="submit" class="save-button" [disabled]="isLoading">
+        Salvar Alterações
+      </button>
+      <div *ngIf="isLoading" class="loading-spinner">Carregando...</div>
+    </form>
+  </div>
+</div>

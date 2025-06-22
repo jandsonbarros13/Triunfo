@@ -1,0 +1,235 @@
+/* meu-perfil.component.scss */
+
+.tela {
+  margin-top: 120px;
+  display: flex;
+  min-height: 100vh;
+  background-image: url('../../assets/usuario.jpg');
+  background-size: cover;
+  background-position: center;
+  justify-content: center; /* Centraliza o card horizontalmente */
+  align-items: center; /* Centraliza o card verticalmente */
+  padding: 20px; /* Adiciona um padding geral para telas menores */
+  box-sizing: border-box; /* Garante que o padding não cause overflow */
+}
+
+.profile-container {
+  flex-grow: 0; /* Impede que ocupe todo o espaço. Deixa o card com tamanho definido pelo conteúdo + max-width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 30px; /* REDUZIDO: de 40px para 30px para um card mais compacto */
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 20px; /* Ajustado: Use apenas margem, e a centralização será feita pelo 'tela' */
+  max-width: 450px; /* REDUZIDO: de 600px para 450px para um card menor */
+  width: 100%; /* Garante que ele ocupe a largura máxima permitida no mobile */
+  box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
+}
+
+.logo {
+  width: 120px; /* Ligeiramente menor para um card mais compacto */
+  margin-bottom: 25px; /* Ligeiramente menor */
+}
+
+.profile-title {
+  color: #04003f;
+  font-size: 1.8rem; /* Ligeiramente menor */
+  margin-bottom: 20px; /* Ligeiramente menor */
+  font-weight: bold;
+  text-align: center; /* Garante que o título esteja centralizado */
+}
+
+.profile-photo-container {
+  margin-bottom: 20px; /* Ligeiramente menor */
+}
+
+.profile-photo {
+  width: 110px; /* Ligeiramente menor */
+  height: 110px; /* Ligeiramente menor */
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #04003f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.webcam-container {
+  margin-top: 15px; /* Ligeiramente menor */
+  border: 2px solid #04003f;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 15px; /* Ligeiramente menor */
+
+  label {
+    display: block;
+    margin-bottom: 6px; /* Ligeiramente menor */
+    font-weight: bold;
+    color: #333;
+    font-size: 0.9rem; /* Ligeiramente menor */
+  }
+
+  input[type="text"],
+  input[type="password"],
+  input[type="time"],
+  select {
+    width: calc(100% - 20px); /* Ajusta para padding */
+    padding: 10px 10px; /* REDUZIDO: de 12px para 10px */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem; /* Ligeiramente menor */
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-sizing: border-box; /* Garante que padding e border não aumentem a largura */
+
+    &:focus {
+      border-color: #04003f;
+      box-shadow: 0 0 0 3px rgba(4, 0, 63, 0.2);
+      outline: none;
+    }
+  }
+
+  .disabled-input {
+    background-color: #e9ecef; /* Cor de fundo para campos desabilitados */
+    color: #6c757d; /* Cor do texto para campos desabilitados */
+    cursor: not-allowed;
+  }
+}
+
+.save-button {
+  width: 100%;
+  padding: 12px; /* REDUZIDO: de 15px para 12px */
+  background-color: #04003f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem; /* Ligeiramente menor */
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  margin-top: 15px; /* Ligeiramente menor */
+
+  &:hover {
+    background-color: #0a005f;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para os botões da câmera */
+/* Usamos um seletor mais específico para não conflitar com botões dentro de .password-input-group */
+button[style*="margin-top: 20px"] {
+  padding: 8px 15px; /* Ligeiramente menor */
+  background-color: #28a745; /* Cor verde para ações positivas */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem; /* Ligeiramente menor */
+  margin: 8px; /* Ligeiramente menor */
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
+
+button[style*="margin-top: 20px"]:nth-of-type(2) {
+  background-color: #dc3545; /* Cor vermelha para "Fechar Câmera" */
+  &:hover {
+    background-color: #c82333;
+  }
+}
+
+/* Estilos para o grupo de input de senha (campo e botão de toggle) */
+.password-input-group {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Espaçamento entre o input e o botão */
+  width: 100%; /* Ocupa a largura total dentro do form-group */
+
+  input {
+    flex-grow: 1; /* Faz o input ocupar o espaço restante */
+    width: auto; /* Permite que flex-grow funcione corretamente */
+    // Garante que o input dentro deste grupo tenha o mesmo estilo base dos outros inputs
+    padding: 10px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    box-sizing: border-box; /* Importante para o cálculo da largura */
+  }
+
+  button {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px; /* Ajustado para combinar com outros inputs */
+    background-color: #f0f0f0;
+    color: #333; /* Cor do texto para combinar */
+    cursor: pointer;
+    font-size: 0.9rem; /* Um pouco menor para o botão de toggle */
+    transition: background-color 0.3s ease-in-out;
+    flex-shrink: 0; /* Impede que o botão encolha */
+    margin: 0; /* Remove margens extras que poderiam ser aplicadas globalmente a botões */
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+}
+
+/* Estilos para o spinner de carregamento */
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #04003f;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  margin: 10px auto; /* Centraliza o spinner */
+}
+
+/* Animação do spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- TENTATIVA DE REMOVER O ÍCONE NO CAMPO USERNAME --- */
+/* Estas regras tentam remover ícones de preenchimento automático do navegador ou de extensões.
+   Pode ser necessário inspecionar o elemento no navegador (F12) para ver a origem exata do ícone. */
+input[id="username"] {
+  background-image: none !important;
+  background-repeat: no-repeat !important;
+  background-position: right 10px center !important;
+  padding-right: 10px !important;
+}
+
+input[id="username"]::-webkit-contacts-auto-fill-button {
+  display: none !important;
+}
+
+input[id="username"]::-ms-reveal {
+  display: none !important;
+}
+
+/* Para navegadores baseados em Chromium, se o ícone for o de "autofill" */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important; /* Mudar a cor de fundo do autofill */
+    -webkit-text-fill-color: #000 !important; /* Cor do texto do autofill */
+    background-image: none !important; /* Remover ícone de preenchimento automático */
+}

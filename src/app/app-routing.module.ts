@@ -8,6 +8,7 @@ import { BobinaComponent } from './bobina/bobina.component';
 import { ConfiguracoesComponent } from './configuracoes/configuracoes.component';
 import { PrimeiroAcessoComponent } from './primeiro-acesso/primeiro-acesso.component';
 import { RegisterComponent } from './register/register.component';
+import { MeuPerfilComponent } from './meu-perfil/meu-perfil.component';
 
 // Define as rotas
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'relatorios', component: RelatoriosComponent },
   { path: 'bobinas', component: BobinaComponent },
   { path: 'usuarios', component: RegisterComponent },
+  { path: 'meu-perfil', component: MeuPerfilComponent },
   { path: 'configuracoes', component: ConfiguracoesComponent },
   { path: 'primeiro-acesso', component: PrimeiroAcessoComponent }
 ];

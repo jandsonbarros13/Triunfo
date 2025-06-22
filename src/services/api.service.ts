@@ -13,6 +13,7 @@ export interface UserData {
   horarioEntrada: string;
   horarioSaida: string;
   foto: string;
+  userType: string;
 }
 
 @Injectable({

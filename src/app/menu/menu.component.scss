@@ -1,151 +1,215 @@
-/* Estilos para o header que envolve a navegação */
+body {
+  background-color: white;
+}
+
 header {
   background-color: white;
-    width: 100%;
-    position: fixed; /* Mantenha o header fixo no topo */
-    top: 0;
-    left: 0;
-    z-index: 1001; /* Garante que o header fique acima do conteúdo inicialmente */
-    height: 100px; /* Altura fixa do header */
+  width: 100%;
+  position: fixed; /* Keep the header fixed at the top */
+  top: 0;
+  left: 0;
+  z-index: 1001; /* Ensures the header stays above everything else, except perhaps modals */
+  height: 120px; /* Fixed height of the header - increased from before */
+  display: flex; /* For vertical centering of content */
+  align-items: center; /* Vertically centers the content */
+  padding: 0 20px; /* Padding on the sides of the header */
+  box-sizing: border-box; /* Ensures padding doesn't increase the total width */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle and single shadow */
 }
 
-/* Estilos para a barra de navegação */
-nav {
-    display: block; /* Controla a altura para a animação */
-    justify-content: flex-start; /* Alinha o logo à esquerda */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%; /* Largura inicial de 100% */
-    height: auto; /* Altura automática para se ajustar ao conteúdo inicial */
-    z-index: 1000;
-    padding: 20px 20px;
-    overflow: hidden;
-    max-height: 50px; /* Altura inicial para o logo (menu oculto) */
-    transition: max-height 0.3s ease-in-out, width 0.3s ease-in-out; /* Transição na altura e largura */
-    cursor: pointer;
-    background-color: transparent; /* O fundo da nav será transparente inicialmente */
+/* Container for the logo and profile within the header */
+.header-content {
+  display: flex;
+  justify-content: space-between; /* Spacing for logo and profile */
+  align-items: center; /* Vertically centers the logo and profile */
+  width: 100%; /* Occupies the full available width in the header */
 }
 
-/* Estilos quando a classe 'open' está presente na nav */
-nav.open {
-    height: 100vh;
-    max-height: none; /* Remove o max-height */
-    width: 30%;
-    cursor: default;
-    background-color: white; /* **Fundo branco para a nav aberta** */
+/* Styles for the logo link in the header */
+.logo-link {
+  display: flex;
+  align-items: center; /* Ensures the image within the link is vertically aligned */
+  padding: 0;
+  cursor: pointer; /* Indicates it's clickable */
+  transition: transform 0.2s ease;
 }
 
-/* Estilos para a lista do menu */
-#menu {
-    display: flex;
-    flex-direction: column;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    align-items: flex-start;
-    background-color: transparent; /* Fundo transparente para o menu */
+.logo-link:hover {
+  transform: scale(1.05);
 }
 
-/* Estilos para os itens da lista (li) dentro da nav */
-nav ul li {
-    margin: 5px 0; /* Espaçamento vertical */
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    background-color: transparent; /* O LI não terá fundo, o A terá */
-    border-radius: 20px; /* Mantém para consistência, mas o A sobrepõe */
-    box-sizing: border-box;
-    opacity: 0; /* Inicialmente invisível */
-    transform: translateX(-20px); /* Pequeno deslocamento para a esquerda */
-    transition: opacity 0.3s ease-in-out 0.1s, transform 0.3s ease-in-out 0.1s;
-    width: 100%; /* Ocupa a largura total da nav */
-}
-
-/* Estilos para os itens da lista quando a classe 'open' está na nav */
-nav.open ul li {
-    opacity: 1; /* Torna visível */
-    transform: translateX(0); /* Remove o deslocamento */
-    width: 100%; /* Garante que os itens ocupem a largura da nav aberta */
-    background-color: transparent; /* Mantém o fundo transparente para o LI quando o menu está aberto */
-    border-radius: 0; /* Remove a borda arredondada quando o menu está aberto */
-    align-items: flex-start; /* Alinha o conteúdo à esquerda */
-}
-
-/* Estilos para os links (a) dentro dos itens da lista (estes são os botões) */
-nav ul li a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: white; /* **Texto branco para os botões** */
-    width: 100%; /* Garante que o link ocupa toda a largura do botão */
-    padding: 10px; /* Adiciona padding ao link para formar o botão */
-    box-sizing: border-box; /* Inclui padding na largura e altura */
-    border-radius: 20px; /* Borda arredondada para os botões */
-    background-color: rgb(3, 3, 93); /* **Fundo azul para os botões** */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Transição para o hover */
-}
-
-/* Estilos de hover para os links (botões) - agora fica mais claro (ou uma cor diferente de azul) */
-nav ul li a:hover,
-nav ul li a.active { /* Adicione a classe 'active' ao link ativo se estiver usando uma */
-    background-color: rgb(0, 0, 150); /* Um azul ligeiramente mais escuro no hover */
-    color: white; /* Texto branco no hover */
-}
-
-/* Estilos para os ícones dentro dos links */
-nav ul li a .material-icons {
-    color: inherit; /* Herda a cor do link pai (branco por padrão) */
-    margin-right: 8px; /* Espaçamento entre ícone e texto */
-}
-
-/* Estilos para o texto do menu */
-nav ul li a .menu-text {
-    margin-left: 10px; /* Espaçamento à esquerda do texto do menu */
-}
-
-
-/* Estilos específicos para o primeiro item da lista (o logo) */
-nav ul li:first-child {
-    margin-bottom: 20px; /* Mais espaço abaixo do logo */
-    opacity: 1; /* Sempre visível */
-    transform: translateX(0); /* Sem deslocamento */
-    width: auto; /* Largura automática para o logo */
-    background-color: transparent; /* Mantém o fundo transparente para o logo */
-    align-self: flex-start; /* Garante que o logo fique no início (topo) */
-}
-
-/* O link do logo não deve ter os mesmos estilos de botão */
-nav ul li:first-child a {
-    background-color: transparent;
-    padding: 0;
-    border-radius: 0;
-    margin-left: 0;
-    color: inherit; /* Garante que a cor do texto do logo não seja alterada */
-}
-
-/* Estilos para a imagem do logo */
+/* Styles for the logo image */
 .logo {
-    background-color: white;
-    width: 120px; /* Largura fixa da logo */
-    max-height: 50px;
-    margin-right: 10px;
+  width: 120px;
+  max-height: 50px; /* Limits height so it doesn't exceed the header */
 }
 
-/* Estilo para o botão de sair */
+/* Styles for the "My Profile" link in the header (stays fixed) */
+.profile-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  /* `color`, `padding`, `border-radius`, `font-weight` were for icon/text, now applied to image or removed as needed */
+  transition: background-color 0.2s ease;
+}
+
+.profile-link:hover {
+  background-color: rgba(4, 0, 63, 0.1);
+  border-radius: 50%; /* Make background hover effect round */
+}
+
+/* --- NEW STYLES FOR THE PROFILE PHOTO --- */
+.profile-photo {
+  width: 50px; /* Adjust size as needed, e.g., 50px for a 120px header */
+  height: 50px; /* Make it square */
+  border-radius: 50%; /* Makes the image circular */
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+  border: 2px solid #04003f; /* Small border for definition, adjust color */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow around the photo */
+  cursor: pointer; /* Indicates it's clickable */
+  transition: transform 0.2s ease;
+}
+
+.profile-photo:hover {
+  transform: scale(1.05); /* Slight scale on hover */
+}
+/* --- END NEW STYLES FOR THE PROFILE PHOTO --- */
+
+
+/* Estilos para a barra de navegação (o menu lateral que desliza) */
+nav.navbar {
+  display: flex;
+  flex-direction: column; /* Arranges the menu list in a column */
+  position: fixed; /* Fixed to slide out of the screen */
+  top: 120px; /* Starts right below the header fixed height (120px) */
+  left: -300px; /* Hides the menu completely to the left */
+  width: 300px; /* Width of the side menu when open */
+  height: calc(100vh - 120px); /* Occupies the rest of the viewport height (adjusted for 120px header) */
+  z-index: 1000; /* Below the header */
+  overflow-x: hidden; /* Hides any overflowing horizontal content */
+  background-color: white; /* Side menu background */
+  transition: left 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transition for sliding and shadow */
+  box-shadow: none; /* Starts without shadow to avoid creating "two divs" effect */
+}
+
+/* Estilos quando a classe 'open' está presente na nav (menu open) */
+nav.navbar.open {
+  /* Removed margin-top: 30px; from here as it was causing the menu to shift down and look odd */
+  left: 0; /* Slides the menu into the screen */
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2); /* Adds shadow only when open */
+}
+
+/* Estilos para a lista do menu (side menu items) */
+#menu {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px; /* Space from the top of the side menu */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: transparent;
+}
+
+/* Styles for list items (li) within the side menu */
+#menu li {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  opacity: 0; /* Initially invisible for animation */
+  transform: translateX(-20px); /* Small displacement for animation */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Styles for list items when the 'open' class is on the nav (for staggered animation) */
+nav.navbar.open #menu li {
+  opacity: 1; /* Makes visible */
+  transform: translateX(0); /* Removes displacement */
+  /* Delay in animation for each item for a staggered effect (requires Sass) */
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      transition-delay: ($i * 0.05s) + 0.1s;
+    }
+  }
+}
+
+/* Hides the side menu completely when not open (to prevent visual issues) */
+#menu.hidden-on-close {
+  display: none;
+}
+
+/* Styles for links (a) within the side menu items (the buttons) */
+#menu li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white; /* White text for buttons */
+  width: calc(100% - 40px); /* Adjusts width for internal menu padding */
+  padding: 12px 15px;
+  margin: 0 20px; /* Centers buttons within the menu */
+  border-radius: 8px;
+  background-color: rgb(3, 3, 93); /* Dark blue background for buttons */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#menu li a:hover,
+#menu li a.active {
+  background-color: rgb(0, 0, 150); /* A slightly darker blue on hover */
+  transform: translateX(5px);
+}
+
+#menu li a .material-icons {
+  color: inherit;
+  margin-right: 12px;
+  font-size: 22px;
+}
+
+#menu li a .menu-text {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Style for the logout button */
 .logout-button {
-    background-color: rgb(220, 53, 69) !important; /* Vermelho para o botão de sair */
-    color: white !important;
+  background-color: rgb(220, 53, 69) !important; /* Red for the logout button */
+  color: white !important;
 }
 
 .logout-button:hover {
-    background-color: rgb(180, 40, 55) !important; /* Um tom mais escuro de vermelho no hover */
+  background-color: rgb(180, 40, 55) !important; /* A darker red on hover */
 }
 
+/* Media query for smaller screens (responsiveness) */
+@media (max-width: 768px) {
+  nav.navbar {
+    width: 250px; /* Smaller width for the side menu on small screens */
+    left: -250px; /* Adjusts hiding for the new width */
+  }
 
-/* Media query para telas menores (máximo 600px de largura) */
+  nav.navbar.open {
+    left: 0;
+  }
+
+  /* .profile-link .menu-text is removed from HTML, so this rule is effectively unused. */
+  .profile-link .menu-text {
+    display: none;
+  }
+}
+
 @media (max-width: 600px) {
-    nav {
-        width: 100%; /* Largura total em telas pequenas */
-    }
+  nav.navbar {
+    width: 80%; /* Larger width for the menu on very small screens */
+    left: -80%; /* Adjusts hiding */
+  }
+
+  nav.navbar.open {
+    left: 0;
+  }
+}
+
+/* When the menu is closed, hide menu text to avoid visual issues during transition */
+#menu.hidden-on-close .menu-text {
+  display: none;
 }

@@ -21,6 +21,7 @@ import { ConfiguracoesComponent } from './configuracoes/configuracoes.component'
 import { WebcamModule } from 'ngx-webcam';
 import { MenuComponent } from './menu/menu.component';
 import { CalendarioComponent } from './calendario/calendario.component';
+import { MeuPerfilComponent } from './meu-perfil/meu-perfil.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CalendarioComponent } from './calendario/calendario.component';
     PrimeiroAcessoComponent,
     ConfiguracoesComponent,
     MenuComponent,
-    CalendarioComponent
+    CalendarioComponent,
+    MeuPerfilComponent
   ],
   imports: [
     BrowserModule,
